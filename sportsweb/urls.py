@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from nfl import views as nfl_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(r'', nfl_views.home_page, name = 'home'),
+    path(r'new', nfl_views.new_user, name = 'new_user'),
+    path(r'(.+)/nfl/', nfl_views.nfl_page, name = 'nfl_page'),
+    path(r'(.+)/nfl/picks', nfl_views.picks, name = 'picks')
 ]
