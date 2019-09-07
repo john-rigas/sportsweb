@@ -51,31 +51,6 @@ def generate_db_selections(player):
     for game in Game.objects.all():
         Selection.objects.create(game = game, player = player)
 
-def get_players_record(player):
-    record = [0,0,0]
-    for game in Game.objects.all():
-        if game.gametime > get_current_datetime():
-            winner = None
-        elif game.home_score > game.away_score:
-            winner = game.home_team
-        elif game.away_score > game.home_score:
-            winner = game.away_team
-        else:
-            print (game.home_score)
-            print (game.away_score)
-            winner = 'TIE'
-
-        selection = Selection.objects.get(player = player, game = game)
-        if winner == None:
-            pass
-        elif winner == selection.prediction:
-            record[0] += 1
-        elif winner == 'TIE':
-            record[2] += 1
-        else:
-            record[1] += 1
-    return record
-
 def get_current_datetime():
     return datetime.now(pytz.timezone('US/Eastern')).replace(
                                                         tzinfo=None,
@@ -89,11 +64,69 @@ def get_current_week():
     current_week = 1 + (days_since_opener // 7) if days_since_opener > 0 else 1
     return current_week
 
+
+def update_player_records():
+    for player in Player.objects.all():
+        player.wins = 0
+        player.losses = 0
+        player.ties = 0
+        for game in Game.objects.all():
+            winner = get_game_winner(game)
+
+            selection = Selection.objects.get(player = player, game = game)
+            if winner == None:
+                pass
+            elif winner == selection.prediction:
+                player.wins += 1
+            elif winner == 'TIE':
+                player.ties += 1
+            else:
+                player.losses += 1
+        player.save()
+
+def update_team_records():
+    for team in Team.objects.all():
+        team.wins = 0
+        team.losses = 0
+        team.ties = 0
+        for game in Game.objects.filter(Q(home_team = team) | Q(away_team = team)):
+            winner = get_game_winner(game)
+            if winner == None:
+                pass
+            elif winner == team:
+                team.wins += 1
+            elif winner == 'TIE':
+                team.ties += 1
+            else:
+                team.losses += 1
+        team.save()
+
+
+def get_game_winner(game):
+    if game.gametime > get_current_datetime():
+        winner = None
+    elif game.home_score > game.away_score:
+        winner = game.home_team
+    elif game.away_score > game.home_score:
+        winner = game.away_team
+    else:
+        winner = 'TIE'
+    return winner
+
+
+
 class Team(models.Model):
     name = models.TextField()
+    wins = models.PositiveSmallIntegerField(default = 0)
+    losses = models.PositiveSmallIntegerField(default = 0)
+    ties = models.PositiveSmallIntegerField(default = 0)
 
     def __str__(self):
-        return self.name
+        if self.ties == 0:
+            string_rep = f"{self.name} {self.wins}-{self.losses}"
+        else:
+            string_rep = f"{self.name} {self.wins}-{self.losses}-{self.ties}"
+        return string_rep
 
 class Game(models.Model):
     home_team = models.ForeignKey(Team, models.CASCADE, related_name = 'home_team')
@@ -109,6 +142,9 @@ class Game(models.Model):
 
 class Player(models.Model):
     name = models.TextField()
+    wins = models.PositiveSmallIntegerField(default = 0)
+    losses = models.PositiveSmallIntegerField(default = 0)
+    ties = models.PositiveSmallIntegerField(default = 0)
 
     def __str__(self):
         return self.name
@@ -119,3 +155,4 @@ class Selection(models.Model):
     prediction = models.ForeignKey(Team, 
                                    models.CASCADE, 
                                    null=True)
+

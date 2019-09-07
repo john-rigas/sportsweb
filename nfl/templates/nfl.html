@@ -41,13 +41,13 @@
                         <td>L</td>
                         <td>T</td>
                     </tr>
-                    {% for name,record in standings.items %}
+                    {% for player in standings %}
                         <tr>
                             <td>{{ forloop.counter }}:</td>
-                            <td> {{ name }}</td>
-                            <td> {{ record.0 }}</td>
-                            <td> {{ record.1 }}</td>
-                            <td> {{ record.2 }}</td>
+                            <td> {{ player.name }}</td>
+                            <td> {{ player.wins }}</td>
+                            <td> {{ player.losses }}</td>
+                            <td> {{ player.ties }}</td>
                         </tr>
                     {% endfor %}
                 </table>
