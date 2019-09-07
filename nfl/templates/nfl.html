@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'nfl/nfl.css' %}">
+
+<html>
+    <head>
+        <title>Fred and Fred</title>
+    </head>
+    <body>
+        <div class="row">
+            <div class="column">
+                <select name="weekno" id="weekmenu" onchange="location=this.value;">
+                    {% for i in range %}
+                        {% if i == weekno %}
+                            <option value="/{{ player.name }}/nfl/{{ i }}/" selected>Week {{ i }}</option>
+                        {% else %}
+                            <option value="/{{ player.name }}/nfl/{{ i }}/">Week {{ i }}</option>
+                        {% endif %}        
+                    {% endfor %}
+                </select>
+                <form method="POST" action="/{{ player.name }}/nfl/{{ weekno }}/picks">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    <table>
+                        {% for form in formset %}
+                        {{ form }}
+                        {% endfor %}
+                    </table>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+            <div class="column">
+                <table>
+                    <tr>STANDINGS</tr>
+                    <tr>
+                        <td></td>
+                        <td>Player</td>
+                        <td>W</td>
+                        <td>L</td>
+                        <td>T</td>
+                    </tr>
+                    {% for name,record in standings.items %}
+                        <tr>
+                            <td>{{ forloop.counter }}:</td>
+                            <td> {{ name }}</td>
+                            <td> {{ record.0 }}</td>
+                            <td> {{ record.1 }}</td>
+                            <td> {{ record.2 }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
