@@ -139,8 +139,7 @@ class Game(models.Model):
     home_score = models.PositiveSmallIntegerField(default = 0)
     away_score = models.PositiveSmallIntegerField(default = 0)
     week_no = models.PositiveSmallIntegerField(default = 1)
-    gametime = models.DateTimeField(
-        default = datetime.now(pytz.timezone('US/Eastern')).replace(tzinfo=None)) 
+    gametime = models.DateTimeField(default = datetime(2019, 9, 2, 0, 0))
 
     def __str__(self):
         return str(self.gametime.strftime("%b %d %Y %H:%M")) + ' ' + self.away_team.name + ' at ' + self.home_team.name
