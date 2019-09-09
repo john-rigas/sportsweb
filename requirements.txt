@@ -1,1 +1,1 @@
-selenium
+selenium django
