@@ -20,23 +20,7 @@
                         {% endif %}        
                     {% endfor %}
                 </select>
-                <!-- <table>
-                    <tr>
-                        <td>DTRAIN</td>
-                        {% for player in standings %}
-                            <td>{{ player.name }}</td>
-                        {% endfor %}
-                    </tr>    
-                    {% for game in weekgames %}
-                        <tr>
-                            {% for player in standings %}
-                                <td>
-                                    {{ picks.{{ forloop.counter }}.{{ forloop.counter }} }}
-                                </td>
-                            {% endford %}
-                        </tr>
-                    {% endfor %}
-                </table> -->
+
                 <form method="POST" action="/{{ player.name }}/nfl/{{ weekno }}/picks">
                     {% csrf_token %}
                     {{ formset.management_form }}
