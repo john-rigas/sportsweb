@@ -29,6 +29,10 @@ def load_schedule_to_db_from_pl():
                 gametime = game['gametime']
             )
 
+def generate_db_selections(player):
+    for game in Game.objects.all():
+        Selection.objects.create(game = game, player = player)
+
 def load_results_to_db_from_pl():
     with open('saved_results.pl','rb') as f:
         results = pickle.load(f)
@@ -47,9 +51,6 @@ def load_results_to_db_from_pl():
 
             game_to_update.save()
 
-def generate_db_selections(player):
-    for game in Game.objects.all():
-        Selection.objects.create(game = game, player = player)
 
 def get_current_datetime():
     return datetime.now(pytz.timezone('US/Eastern')).replace(
@@ -113,6 +114,10 @@ def get_game_winner(game):
         winner = 'TIE'
     return winner
 
+def execute_regular_update():
+    load_results_to_db_from_pl() 
+    update_player_records() 
+    update_team_records() 
 
 
 class Team(models.Model):
