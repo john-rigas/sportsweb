@@ -156,7 +156,5 @@ class Player(models.Model):
 class Selection(models.Model):
     game = models.ForeignKey(Game, models.CASCADE, null = False, blank=False)
     player = models.ForeignKey(Player, models.CASCADE)
-    prediction = models.ForeignKey(Team, 
-                                   models.CASCADE, 
-                                   null=True)
+    prediction = models.ForeignKey(Team, models.CASCADE, null=True, blank=True)
 

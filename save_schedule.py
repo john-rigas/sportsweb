@@ -95,7 +95,10 @@ def get_results_from_html(page_source):
             if gametime + timedelta(hours=4) < get_current_datetime():
                 winning_team = game.find('td', {'data-stat':'winner'}).find('a').get_text()
                 losing_team = game.find('td', {'data-stat':'loser'}).find('a').get_text()
-                winning_score = game.find('td', {'data-stat':'pts_win'}).find('strong').get_text()
+                if game.find('td', {'data-stat':'pts_win'}).find('strong'):
+                    winning_score = game.find('td', {'data-stat':'pts_win'}).find('strong').get_text()
+                else:
+                    winning_score = game.find('td', {'data-stat':'pts_win'}).get_text()
                 losing_score = game.find('td', {'data-stat':'pts_lose'}).get_text()
 
                 if week_no not in games_to_update.keys():

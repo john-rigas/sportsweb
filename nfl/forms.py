@@ -15,13 +15,13 @@ class SelectionForm(ModelForm):
         if self.instance:
             self.fields['game'].empty_label = None
             self.fields['game'].queryset = Game.objects.filter(pk = self.instance.game.id)
-            self.fields['game'].widget.attrs['disabled'] = 'disabled'
+            self.fields['game'].disabled = True
             self.fields['prediction'].widget = forms.RadioSelect()
             self.fields['prediction'].queryset = Team.objects.filter(
                 Q(name = self.instance.game.home_team.name) | 
                 Q(name = self.instance.game.away_team.name))
             if self.instance.game.gametime < get_current_datetime():
-                self.fields['prediction'].widget.attrs['disabled'] = "disabled"
+                self.fields['prediction'].disabled = True
 
 
 # SelectionFormset = modelformset_factory(Selection, fields=('prediction','game'), extra=0)

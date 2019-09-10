@@ -77,5 +77,6 @@ def picks(request, user, weekno):
         return redirect(f'/accounts/login/')
     player = Player.objects.get(name = user)
     formset = SelectionFormset(request.POST)
-    formset.save() # need to make sure this is safe
+    if formset.is_valid():
+        formset.save() # need to make sure this is safe
     return redirect(f'/{player.name}/nfl/{weekno}/')

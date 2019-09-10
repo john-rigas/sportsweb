@@ -23,11 +23,8 @@
 
                 <form method="POST" action="/{{ player.name }}/nfl/{{ weekno }}/picks">
                     {% csrf_token %}
-                    {{ formset.management_form }}
                     <table>
-                        {% for form in formset %}
-                        {{ form }}
-                        {% endfor %}
+                        {{ formset }}
                     </table>
                     <input type="submit" value="Submit">
                 </form>
