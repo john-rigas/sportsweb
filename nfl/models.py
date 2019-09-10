@@ -13,7 +13,7 @@ people = [
     ('Jenkins', 'james.rigas@zitomedia.com', 'jenkins'),
     ('Doc', 'maryannrigas@gmail.com', 'doc'),
     ('Andrew', 'andrewjrigas@gmail.com', 'andrew'),
-    ('Chris', 'chris.rigas22@gmail.com', 'david'),
+    ('Chris', 'chris.rigas22@gmail.com', 'chris'),
     ('Papou', 'john.rigas@zitomedia.com', 'papou'),
     ('John Michael', 'jmrigas@gmail.com', 'johnny'),
     ('D-Train', 'dtrain.rigas@gmail.com', 'david'),
@@ -21,11 +21,11 @@ people = [
 ]
 
 def update_selections_from_pl():
-    with open('manual_picks.pl', 'rb') as f:
+    with open('manualpicks.pl', 'rb') as f:
         picks = pickle.load(f)
     for username, home_team, away_team, prediction in picks:
         update_selection_manually(username, home_team, away_team, prediction)
-    os.remove('manual_picks.pl')
+    os.remove('manualpicks.pl')
 
 def update_selection_manually(username, home_team_name, away_team_name, team_predicted_name):
     player = Player.objects.get(name = username)
@@ -72,18 +72,19 @@ def load_results_to_db_from_pl():
         results = pickle.load(f)
     for week in results.keys():
         for game_result in results[week]:
-            game_to_update = Game.objects.filter(week_no = week).filter(
-                                              Q(home_team__name = game_result['winning_team']) |
-                                              Q(away_team__name = game_result['winning_team']))[0]
+            if game_result['winning_score']:
+                game_to_update = Game.objects.filter(week_no = week).filter(
+                                                Q(home_team__name = game_result['winning_team']) |
+                                                Q(away_team__name = game_result['winning_team']))[0]
 
-            if game_result['winning_team'] == game_to_update.home_team.name:
-                game_to_update.home_score = game_result['winning_score']
-                game_to_update.away_score = game_result['losing_score']
-            else:
-                game_to_update.home_score = game_result['losing_score']
-                game_to_update.away_score = game_result['winning_score']               
+                if game_result['winning_team'] == game_to_update.home_team.name:
+                    game_to_update.home_score = int(game_result['winning_score'])
+                    game_to_update.away_score = int(game_result['losing_score'])
+                else:
+                    game_to_update.home_score = int(game_result['losing_score'])
+                    game_to_update.away_score = int(game_result['winning_score'])               
 
-            game_to_update.save()
+                game_to_update.save()
 
 
 def get_current_datetime():

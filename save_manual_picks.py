@@ -14,7 +14,7 @@ picks = [
     ('Carolina Panthers', 'Los Angeles Rams', 'Los Angeles Rams'),
     ('Jacksonville Jaguars', 'Kansas City Chiefs', 'Kansas City Chiefs'),
     ('Los Angeles Chargers', 'Indianapolis Colts', 'Los Angeles Chargers'),
-    ('Seattle Seahawks', 'Cincinatti Bengals', 'Seattle Seahawks'),
+    ('Seattle Seahawks', 'Cincinnati Bengals', 'Seattle Seahawks'),
     ('Dallas Cowboys', 'New York Giants', 'New York Giants'),
     ('Arizona Cardinals', 'Detroit Lions', 'Detroit Lions'),
     ('Tampa Bay Buccaneers', 'San Francisco 49ers', 'San Francisco 49ers'),

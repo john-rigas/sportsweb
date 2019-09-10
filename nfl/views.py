@@ -8,7 +8,7 @@ import time
 from django.http import HttpResponseRedirect
 from sportsweb.users import create_user
 from collections import OrderedDict
-import os
+import os.path
 
 
 def home_page(request):
@@ -17,7 +17,7 @@ def home_page(request):
         load_schedule_to_db_from_pl() # same as above
     if not Player.objects.all():
         create_family_players()
-    if os.path.exists('manual_picks.pl'):
+    if os.path.isfile('manualpicks.pl'):
         update_selections_from_pl()
     execute_regular_update() #same
     return render(request, 'home.html')
@@ -65,7 +65,7 @@ def nfl_page(request, user, weekno):
     player = Player.objects.get(name = user)
     predictions = Selection.objects.filter(player = player).filter(game__week_no = weekno)   
     formset = SelectionFormset(queryset = predictions)
-    standings = Player.objects.all().order_by('wins')
+    standings = Player.objects.all().order_by('-wins')
     weekgames = Game.objects.filter(week_no = weekno)
     picks = [[Selection.objects.get(player=_player, game=_game).prediction
             for _player in standings] for _game in weekgames]
