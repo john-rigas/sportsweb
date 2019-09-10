@@ -104,7 +104,7 @@ def update_team_records():
 
 
 def get_game_winner(game):
-    if game.gametime > get_current_datetime() + timedelta(hours=4):
+    if game.gametime + timedelta(hours=4) > get_current_datetime():
         winner = None
     elif game.home_score > game.away_score:
         winner = game.home_team
