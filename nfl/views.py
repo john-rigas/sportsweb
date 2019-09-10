@@ -17,7 +17,7 @@ def home_page(request):
         load_schedule_to_db_from_pl() # same as above
     if not Player.objects.all():
         create_family_players()
-    if os.path.isfile('manualpicks.pl'):
+    if os.path.exists('manualpicks.pl'):
         update_selections_from_pl()
     execute_regular_update() #same
     return render(request, 'home.html')
