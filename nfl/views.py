@@ -15,7 +15,7 @@ def home_page(request):
     if not Team.objects.all():
         load_teams_to_db() #should elim from regular website load
         load_schedule_to_db_from_pl() # same as above
-    if not Player.objects.get(name = 'johnny'):
+    if not Player.objects.all():
         create_family_players()
     if os.path.exists('manual_picks.pl'):
         update_selections_from_pl()
