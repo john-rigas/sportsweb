@@ -2,18 +2,23 @@ from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
-from nfl.models import Player, Selection, Team, Game, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week
+from nfl.models import Player, Selection, Team, Game, create_family_players, update_selections_from_pl, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week
 from nfl.forms import SelectionFormset
 import time
 from django.http import HttpResponseRedirect
 from sportsweb.users import create_user
 from collections import OrderedDict
+import os
 
 
 def home_page(request):
     if not Team.objects.all():
         load_teams_to_db() #should elim from regular website load
         load_schedule_to_db_from_pl() # same as above
+    if not os.path.exists('db.sqlite3'):
+        create_family_players()
+    if os.path.exists('manual_picks.pl'):
+        update_selections_from_pl()
     execute_regular_update() #same
     return render(request, 'home.html')
 

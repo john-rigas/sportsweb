@@ -5,8 +5,42 @@ import time
 from datetime import date, datetime, timedelta
 from django.utils import timezone
 import pytz
+from users import create_user
+import os
 
-# Create your models here.
+people = [
+    ('Uncle Mike', 'michael.rigas@zitomedia.com', 'unclemike'),
+    ('Jenkins', 'james.rigas@zitomedia.com', 'jenkins'),
+    ('Doc', 'maryannrigas@gmail.com', 'doc'),
+    ('Andrew', 'andrewjrigas@gmail.com', 'andrew'),
+    ('Chris', 'chris.rigas22@gmail.com', 'david'),
+    ('Papou', 'john.rigas@zitomedia.com', 'papou'),
+    ('John Michael', 'jmrigas@gmail.com', 'johnny'),
+    ('D-Train', 'dtrain.rigas@gmail.com', 'david'),
+    ('Uncle Tim', 'timothy.rigas@zitomedia.com', 'uncletim')
+]
+
+def update_selections_from_pl():
+    with open('manual_picks.pl', 'rb') as f:
+        picks = pickle.load(f)
+    for username, home_team, away_team, prediction in picks:
+        update_selection_manually(username, home_team, away_team, prediction)
+    os.remove('manual_picks.pl')
+
+def update_selection_manually(username, home_team_name, away_team_name, team_predicted_name):
+    player = Player.objects.get(name = username)
+    game = Game.objects.get(home_team__name = home_team_name, away_team__name = away_team_name)
+    selection = Selection.objects.get(player = player, game = game)
+    team_predicted = Team.objects.get(name = team_predicted_name)
+    selection.prediction = team_predicted
+    selection.save()
+
+def create_family_players():
+    for person in people:
+        player = Player.objects.create(name = person[2])
+        generate_db_selections(player) #same as above
+        create_user(person[2], person[1], person[2])
+
 def load_teams_to_db():
     with open('team_set.pl','rb') as f:
         teams = pickle.load(f)
