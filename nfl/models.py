@@ -5,7 +5,7 @@ import time
 from datetime import date, datetime, timedelta
 from django.utils import timezone
 import pytz
-from users import create_user
+from sportsweb.users import create_user
 import os
 
 people = [
