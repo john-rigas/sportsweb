@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 import pickle
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from django.utils import timezone
 import pytz
 
@@ -104,7 +104,7 @@ def update_team_records():
 
 
 def get_game_winner(game):
-    if game.gametime > get_current_datetime():
+    if game.gametime > get_current_datetime() + timedelta(hours=4):
         winner = None
     elif game.home_score > game.away_score:
         winner = game.home_team
