@@ -17,5 +17,5 @@ parser = argparse.ArgumentParser(description='run cronjobs')
 parser.add_argument('jobs', default = job_dict.keys())
 args = parser.parse_args()
 
-for key in args:
+for key in args.jobs:
     job_dict[key]()
