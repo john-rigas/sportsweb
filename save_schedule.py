@@ -1,5 +1,7 @@
 import pickle
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+
 from bs4 import BeautifulSoup
 import calendar
 from datetime import datetime, timedelta
@@ -47,7 +49,9 @@ def date_and_time_to_datetime(date, time):
     
 
 def load_nfl_scores_page():
-    browser = webdriver.Firefox()
+    options = Options()
+    options.headless = True
+    browser = webdriver.Firefox(options=options)
     browser.get('https://www.pro-football-reference.com/years/2019/games.htm')
     page_source = browser.page_source
     browser.quit()
