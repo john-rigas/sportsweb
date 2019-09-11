@@ -92,4 +92,5 @@ def picks(request, user, weekno):
 
 def change_password(request, user):
     change_user_password(user, request.POST['newpassword'])
-    return redirect(f'/')
+    logout(request)
+    return redirect('/')
