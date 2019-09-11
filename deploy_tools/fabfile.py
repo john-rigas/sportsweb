@@ -13,6 +13,7 @@ def deploy():
         _create_or_update_dotenv()
         _update_static_files()
         _update_database()
+        _add_cronjobs()
 
 def _get_latest_source():
     if exists('.git'):  
@@ -42,3 +43,9 @@ def _update_static_files():
 
 def _update_database():
     run('./virtualenv/bin/python manage.py migrate --noinput') 
+
+def _add_cronjobs():
+    run('crontab -l > /tmp/crondump')             
+    run('echo "*/15 * * * * export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:~/sites/fredandfred.tk/virtualenv/lib/python3.6/site-packages/selenium/webdriver/firefox/webdriver.py && DISPLAY=:0 && cd ~/sites/fredandfred.tk  &&  ./virtualenv/bin/python save_schedule.py" >> /tmp/crondump')
+    run('echo "*/15 * * * * cd /home/johnny/sites/fredandfred.tk && ./virtualenv/bin/python run_updates.py"  >> /tmp/crondump')
+    run('crontab /tmp/crondump')
