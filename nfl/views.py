@@ -92,5 +92,4 @@ def picks(request, user, weekno):
 
 def change_password(request, user):
     change_user_password(user, request.POST['newpassword'])
-    weekno = get_current_week()
-    return redirect(f'/{user}/nfl/{weekno}/')
+    return redirect(f'/')
