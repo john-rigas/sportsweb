@@ -19,7 +19,7 @@ def home_page(request):
         create_family_players()
     if os.path.exists('manualpicks.pl'):
         update_selections_from_pl()
-    execute_regular_update() #same
+    #execute_regular_update() #same
     if 'user' in request.session.keys():
         weekno = get_current_week()
         username = request.session['user']
