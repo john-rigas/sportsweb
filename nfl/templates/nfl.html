@@ -50,6 +50,22 @@
                     {% endfor %}
                 </table>
             </div>
+            <div class='column'>
+                <h1>Change password</h1>
+                <form method="POST" action="/{{ player.name }}/changepassword">
+                    <input name = 'newpassword'
+                        id = "id_newpassword"
+                        class="form-control input-lg"
+                        placeholder='new password'/>
+                    <input type="submit" value="Submit">
+                {% csrf_token %}
+                </form>
+                <h1>Logout</h1>
+                <form method="POST" action="/accounts/logout">
+                    <input type="submit" value="Logout">
+                {% csrf_token %}
+                </form>
+            </div>
         </div>
     </body>
 </html>

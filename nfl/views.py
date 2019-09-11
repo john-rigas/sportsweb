@@ -6,7 +6,7 @@ from nfl.models import Player, Selection, Team, Game, create_family_players, upd
 from nfl.forms import SelectionFormset
 import time
 from django.http import HttpResponseRedirect
-from sportsweb.users import create_user
+from sportsweb.users import create_user, change_user_password
 from collections import OrderedDict
 import os.path
 
@@ -89,3 +89,8 @@ def picks(request, user, weekno):
     if formset.is_valid():
         formset.save() # need to make sure this is safe
     return redirect(f'/{player.name}/nfl/{weekno}/')
+
+def change_password(request, user):
+    change_user_password(user, request.POST['newpassword'])
+    weekno = get_current_week()
+    return redirect(f'/{user}/nfl/{weekno}/')
