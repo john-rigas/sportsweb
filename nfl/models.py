@@ -23,7 +23,7 @@ people = [
 ]
 
 def send_backup_email_to_me(player, picks):
-    message = player.name + '\n' + '\n'.join(pick.game + ': ' + pick.prediction for pick in picks)
+    message = player.name + '\n' + '\n'.join(str(pick.game) + ': ' + str(pick.prediction) for pick in picks)
     send_mail('Picks backup',
               message,
               settings.DEFAULT_FROM_EMAIL,
