@@ -55,4 +55,4 @@ def _add_cronjobs():
     run('crontab /tmp/crondump')
 
 def _set_email_api_key():
-    run('export SEND_GRID_API_KEY=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')
+    run('SENDGRID_API_KEY="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"')
