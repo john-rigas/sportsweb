@@ -4,6 +4,7 @@ import pickle
 import time
 from datetime import date, datetime, timedelta
 from django.utils import timezone
+from django.core.mail import send_mail
 import pytz
 from sportsweb.users import create_user
 import os
@@ -19,6 +20,14 @@ people = [
     ('D-Train', 'dtrain.rigas@gmail.com', 'david'),
     ('Uncle Tim', 'timothy.rigas@zitomedia.com', 'uncletim')
 ]
+
+def send_backup_email_to_me(player, picks):
+    message = player.name + '\n' + '\n'.join(pick.game + ': ' + pick.prediction for pick in picks)
+    send_mail('Picks backup',
+              message,
+              'jmrigas@gmail.com',
+              ['jmrigas@gmail.com'],
+              fail_silently=False)    
 
 def update_selections_from_pl():
     with open('manualpicks.pl', 'rb') as f:
