@@ -49,7 +49,7 @@ def _add_cronjobs():
     #run('crontab -l > /tmp/crondump')
     run('rm /tmp/crondump')             
     run('echo "*/3 * * * * export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:~/sites/fredandfred.tk/virtualenv/lib/python3.6/site-packages/selenium/webdriver/firefox/webdriver.py && DISPLAY=:0 && cd ~/sites/fredandfred.tk  &&  ./virtualenv/bin/python save_schedule.py" >> /tmp/crondump')
-    run('echo "*/4 * * * * cd /home/johnny/sites/fredandfred.tk && ./virtualenv/bin/python run_updates.py"  >> /tmp/crondump')
+    run('echo "*/4 * * * * cd ~/sites/fredandfred.tk && ./virtualenv/bin/python run_updates.py"  >> /tmp/crondump')
     run('crontab /tmp/crondump')
     print ('test 3')
     run('crontab -l')
