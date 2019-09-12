@@ -130,8 +130,12 @@ else:
     SECRET_KEY = 'insecure-key-for-dev'
     ALLOWED_HOSTS = []
 
-EMAIL_BACKEND = "sendgrid_backend.SendgridBackend"
-SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
-
-#SENDGRID_SANDBOX_MODE_IN_DEBUG=False
-#SENDGRID_ECHO_TO_STDOUT=False
+SEND_GRID_API_KEY = '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'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'jmrigas'
+EMAIL_HOST_PASSWORD = 'Nicholspin.44'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'jmrigas@gmail.com'
+ACCOUNT_EMAIL_SUBJECT_PREFIX = 'Fred and Fred'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

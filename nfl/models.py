@@ -5,6 +5,7 @@ import time
 from datetime import date, datetime, timedelta
 from django.utils import timezone
 from django.core.mail import send_mail
+from django.conf import settings
 import pytz
 from sportsweb.users import create_user
 import os
@@ -25,8 +26,8 @@ def send_backup_email_to_me(player, picks):
     message = player.name + '\n' + '\n'.join(pick.game + ': ' + pick.prediction for pick in picks)
     send_mail('Picks backup',
               message,
-              'jmrigas@gmail.com',
-              ['jmrigas@gmail.com'],
+              settings.DEFAULT_FROM_EMAIL,
+              [settings.DEFAULT_FROM_EMAIL],
               fail_silently=False)    
 
 def update_selections_from_pl():
