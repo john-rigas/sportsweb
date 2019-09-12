@@ -14,6 +14,7 @@ def deploy():
         _update_static_files()
         _update_database()
         _add_cronjobs()
+        _set_email_api_key()
 
 def _get_latest_source():
     if exists('.git'):  
@@ -52,3 +53,6 @@ def _add_cronjobs():
     run('echo "*/15 * * * * cd ~/sites/fredandfred.tk && ./virtualenv/bin/python run_updates.py"  >> /tmp/crondump')
     run('echo "0 0 4 9-12 3 cd ~/sites/fredandfred.tk && ./virtualenv/bin/python set_currentweek_cron_emails.py" >> /tmp/crondump')
     run('crontab /tmp/crondump')
+
+def _set_email_api_key():
+    run('export SEND_GRID_API_KEY=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')
