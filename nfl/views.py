@@ -72,10 +72,10 @@ def nfl_page(request, user, weekno):
     formset = SelectionFormset(queryset = predictions)
     standings = Player.objects.all().order_by('-wins')
     weekgames = Game.objects.filter(week_no = weekno)
-    picks = [OrderedDict(sorted({_player.name:(Selection.objects.get(player=_player, game=_game).prediction.abbrv
+    picks = [OrderedDict(sorted({_player:(Selection.objects.get(player=_player, game=_game).prediction.abbrv
                            if Selection.objects.get(player=_player, game=_game).prediction is not None
                            else 'N/A') 
-                           for _player in standings}.items(), key = lambda x: x[0])) for _game in weekgames]
+                           for _player in standings}.items(), key = lambda x: x[0].wins)) for _game in weekgames]
     return render(request, 'nfl.html', {'player': player, 
                                         'formset': formset, 
                                         'standings': standings,
