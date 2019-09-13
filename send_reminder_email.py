@@ -33,7 +33,11 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
 
             if any(selection.prediction == None for selection in models.Selection.objects.filter(player = player, game__week_no = weekno)):
                 
-                message = f'There are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
+                if player.name == 'johnny' or player.name == 'david':
+                    print (player)
+                    print ([selection.prediction for selection in models.Selection.objects.filter(player = player, game__week_no = weekno)])
+                
+                message = f'Dear {player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
 
                 send_mail('You are running out of time to make your nfl picks',
                           message,
