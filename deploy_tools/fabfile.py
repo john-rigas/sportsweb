@@ -14,7 +14,6 @@ def deploy():
         _update_static_files()
         _update_database()
         _add_cronjobs()
-        _send_grid()
 
 def _get_latest_source():
     if exists('.git'):  
@@ -38,6 +37,8 @@ def _create_or_update_dotenv():
             'abcdefghijklmnopqrstuvwxyz0123456789', k=50
         ))
         append('.env', f'DJANGO_SECRET_KEY={new_secret}')
+    if 'EMAIL_KEY_FRED' not in current_contents:
+        append('.env', 'EMAIL_KEY_FRED=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')        
 
 def _update_static_files():
     run('./virtualenv/bin/python manage.py collectstatic --noinput') 
@@ -53,6 +54,3 @@ def _add_cronjobs():
     run('echo "*/15 * * * * cd ~/sites/fredandfred.tk && ./virtualenv/bin/python run_updates.py"  >> /tmp/crondump')
     run('echo "0 0 4 9-12 3 cd ~/sites/fredandfred.tk && ./virtualenv/bin/python set_currentweek_cron_emails.py" >> /tmp/crondump')
     run('crontab /tmp/crondump')
-
-def _send_grid():
-    append('.env', 'EMAIL_KEY=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')
