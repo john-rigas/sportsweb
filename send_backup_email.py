@@ -4,7 +4,6 @@ import os
 import django
 from sportsweb import settings
 
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
 django.setup()
 
