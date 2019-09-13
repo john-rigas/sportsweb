@@ -130,7 +130,7 @@ else:
     SECRET_KEY = 'insecure-key-for-dev'
     ALLOWED_HOSTS = []
 
-SEND_GRID_API_KEY = os.environ['EMAIL_KEY']
+SEND_GRID_API_KEY = ''
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'fredandfred'
 EMAIL_HOST_PASSWORD = 'Nicholspin.44'
