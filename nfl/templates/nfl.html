@@ -38,6 +38,7 @@
                         <td>W</td>
                         <td>L</td>
                         <td>T</td>
+                        <td>GB</td>
                     </tr>
                     {% for player in standings %}
                         <tr>
@@ -46,6 +47,7 @@
                             <td> {{ player.wins }}</td>
                             <td> {{ player.losses }}</td>
                             <td> {{ player.ties }}</td>
+                            <td> {{ (leader.wins + player.losses - player.wins - player.losses)/2 }}</td>
                         </tr>
                     {% endfor %}
                 </table>
