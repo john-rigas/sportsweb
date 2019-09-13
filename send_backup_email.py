@@ -10,9 +10,12 @@ django.setup()
 
 with open('email_backup.pl','rb') as f:
     message = pickle.load(f)
+
 send_mail('Picks backup',
             message,
             settings.DEFAULT_FROM_EMAIL,
             [settings.DEFAULT_FROM_EMAIL],
-            fail_silently=False)   
+            fail_silently=False)
+
+os.remove('email_backup.pl')
 

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
-from nfl.models import Player, Selection, Team, Game, send_backup_email_to_me, create_family_players, update_selections_from_pl, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week
+from nfl.models import Player, Selection, Team, Game, add_to_email_backup, create_family_players, update_selections_from_pl, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week
 from nfl.forms import SelectionFormset
 import time
 from django.http import HttpResponseRedirect
@@ -86,7 +86,7 @@ def picks(request, user, weekno):
         return redirect(f'/accounts/login/')
     player = Player.objects.get(name = user)
     formset = SelectionFormset(request.POST)
-    send_backup_email_to_me(player, Selection.objects.filter(player = player, game__week_no = weekno))
+    add_to_email_backup(player, Selection.objects.filter(player = player, game__week_no = weekno))
     if formset.is_valid():
         formset.save() # need to make sure this is safe
     return redirect(f'/{player.name}/nfl/{weekno}/')
