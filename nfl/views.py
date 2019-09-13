@@ -71,7 +71,6 @@ def nfl_page(request, user, weekno):
     predictions = Selection.objects.filter(player = player).filter(game__week_no = weekno)   
     formset = SelectionFormset(queryset = predictions)
     standings = Player.objects.all().order_by('-wins')
-    leader = standings[0]
     weekgames = Game.objects.filter(week_no = weekno)
     picks = [[Selection.objects.get(player=_player, game=_game).prediction
             for _player in standings] for _game in weekgames]

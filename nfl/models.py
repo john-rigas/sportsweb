@@ -131,6 +131,7 @@ def update_selection_statuses():
                 selection.success = 4
             else:
                 selection.success = 2
+            selection.save()
 
 
 def update_player_records():
