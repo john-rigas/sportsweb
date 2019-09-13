@@ -31,11 +31,7 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
         for player in models.Player.objects.all():
             user = User.objects.get(username = player.name)
 
-            if any(selection.prediction == None for selection in models.Selection.objects.filter(player = player, game__week_no = weekno)):
-                
-                if player.name == 'johnny' or player.name == 'david':
-                    print (player)
-                    print ([selection.prediction for selection in models.Selection.objects.filter(player = player, game__week_no = weekno)])
+            if any(selection.prediction == None for selection in models.Selection.objects.filter(player = player, game__gametime = gametime)):
                 
                 message = f'Dear {player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
 
