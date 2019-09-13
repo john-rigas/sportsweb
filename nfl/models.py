@@ -125,10 +125,10 @@ def update_selection_statuses():
                 pass
             elif winner == selection.prediction:
                 selection.success = 1
-            elif winner == 'TIE':
-                selection.success = 3
             elif selection.prediction == None:
                 selection.success = 4
+            elif winner == 'TIE':
+                selection.success = 3
             else:
                 selection.success = 2
             selection.save()

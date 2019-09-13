@@ -52,7 +52,19 @@
                     {% endfor %}
                 </table>
                 <table>
-                    
+                    <tr></tr>
+                    <tr>
+                        {% for player in standings %}
+                            <td>{{ player.name }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% for game in picks %}
+                        <tr>
+                            {% for player in standings %}
+                                <td>{{ game|get_item:player.name }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
                 </table>
             </div>
             <div class='column'>
