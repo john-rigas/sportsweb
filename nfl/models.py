@@ -138,7 +138,7 @@ def update_player_records():
         player.save()
 
     for player in Player.objects.all():
-        player.gb = leader.wins + player.losses - leader.losses - player.wins
+        player.gb = (leader.wins + player.losses - leader.losses - player.wins)/2
         player.save()
 
 def update_team_records():
