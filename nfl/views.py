@@ -80,8 +80,7 @@ def nfl_page(request, user, weekno):
                                         'weekno': weekno,
                                         'range': range(1,18),
                                         'picks': picks,
-                                        'weekgames': weekgames,
-                                        'leader': leader})
+                                        'weekgames': weekgames})
 
 def picks(request, user, weekno):
     if not request.user.is_authenticated:

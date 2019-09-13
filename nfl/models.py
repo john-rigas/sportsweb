@@ -112,10 +112,12 @@ def get_current_week():
 
 
 def update_player_records():
+    leader = None
     for player in Player.objects.all():
         player.wins = 0
         player.losses = 0
         player.ties = 0
+        player.gb = 0
         for game in Game.objects.all():
             winner = get_game_winner(game)
 
@@ -128,6 +130,15 @@ def update_player_records():
                 player.ties += 1
             else:
                 player.losses += 1
+        if leader is None:
+            leader = player
+        else:
+            if player.wins - player.losses > leader.wins - leader.losses:
+                leader = player
+        player.save()
+
+    for player in Player.objects.all():
+        player.gb = leader.wins + player.losses - leader.losses - player.wins
         player.save()
 
 def update_team_records():
@@ -194,6 +205,7 @@ class Player(models.Model):
     wins = models.PositiveSmallIntegerField(default = 0)
     losses = models.PositiveSmallIntegerField(default = 0)
     ties = models.PositiveSmallIntegerField(default = 0)
+    gb = models.DecimalField(max_digits = 10, decimal_places = 1, default = 0)
 
     def __str__(self):
         return self.name
