@@ -60,8 +60,8 @@
                     </tr>
                     {% for game in picks %}
                         <tr>
-                            {% for player in standings %}
-                                <td>{{ game|get_item:player.name }}</td>
+                            {% for player,pick in game.items %}
+                                <td>{{ pick }}</td>
                             {% endfor %}
                         </tr>
                     {% endfor %}
