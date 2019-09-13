@@ -3,14 +3,15 @@ from django.core.mail import send_mail
 import os
 import django
 import subprocess
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
+django.setup()
+
 from sportsweb import settings
 from nfl import models
 from datetime import timedelta
 import argparse
 from django.contrib.auth.models import User
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
-django.setup()
 
 parser = argparse.ArgumentParser(description='send_reminder_email')
 parser.add_argument('--time', type = int)
@@ -21,7 +22,7 @@ with open('this_weeks_reminders.pl','rb') as f:
     reminder_schedule = pickle.load(f)
 
 weekno = models.get_current_week()
-time_remaining = '1 day' if args.time == 0 else '15 minutes'
+time_remaining = '3 hours' if args.time == 0 else '15 minutes'
 
 for (gamekey, gametime), gameset in reminder_schedule.items():
 
