@@ -62,6 +62,7 @@ def add_abbreviations_to_teams():
         abbreviations = pickle.load(f)
     for team in Team.objects.all():
         team.abbrv = abbreviations[team.name]
+        team.save()
 
 def load_schedule_to_db_from_pl():
     with open('saved_schedule.pl','rb') as f:
