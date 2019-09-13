@@ -55,4 +55,4 @@ def _add_cronjobs():
     run('crontab /tmp/crondump')
 
 def _send_grid():
-    run('EMAIL_KEY="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"')
+    append('.env', 'EMAIL_KEY=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')
