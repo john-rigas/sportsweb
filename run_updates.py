@@ -9,6 +9,7 @@ from nfl import models
 
 job_dict = {
     'r': models.load_results_to_db_from_pl,
+    's': models.update_selection_statuses,
     'p': models.update_player_records,
     't': models.update_team_records
 }

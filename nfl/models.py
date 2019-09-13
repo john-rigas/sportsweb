@@ -116,6 +116,22 @@ def get_current_week():
     current_week = 1 + (days_since_opener // 7) if days_since_opener > 0 else 1
     return current_week
 
+def update_selection_statuses():
+    for game in Game.objects.all():
+        winner = get_game_winner(game)
+        for player in Player.objects.all():
+            selection = Selection.objects.get(player = player, game = game)
+            if winner == None:
+                pass
+            elif winner == selection.prediction:
+                selection.success = 1
+            elif winner == 'TIE':
+                selection.success = 3
+            elif selection.prediction == None:
+                selection.success = 4
+            else:
+                selection.success = 2
+
 
 def update_player_records():
     leader = None
@@ -124,18 +140,18 @@ def update_player_records():
         player.losses = 0
         player.ties = 0
         player.gb = 0
-        for game in Game.objects.all():
-            winner = get_game_winner(game)
-
-            selection = Selection.objects.get(player = player, game = game)
-            if winner == None:
+        for selection in Selection.objects.filter(player = player):
+            if selection.success == 0:
                 pass
-            elif winner == selection.prediction:
+            elif selection.success == 1:
                 player.wins += 1
-            elif winner == 'TIE':
+            elif selection.success == 2:
+                player.losses += 1
+            elif selection.success == 3:
                 player.ties += 1
             else:
-                player.losses += 1
+                pass
+
         if leader is None:
             leader = player
         else:
@@ -221,4 +237,5 @@ class Selection(models.Model):
     game = models.ForeignKey(Game, models.CASCADE, null = False, blank=False)
     player = models.ForeignKey(Player, models.CASCADE)
     prediction = models.ForeignKey(Team, models.CASCADE, null=True, blank=True)
+    success = models.PositiveSmallIntegerField(default = 0) # 0:NA, 1:W, 2:L, 3:T 4:forgot
 
