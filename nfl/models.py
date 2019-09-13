@@ -57,6 +57,12 @@ def load_teams_to_db():
     for team in teams:
         Team.objects.create(name = team)
 
+def add_abbreviations_to_teams():
+    with open('team_abbreviations.pl','rb') as f:
+        abbreviations = pickle.load(f)
+    for team in Team.objects.all():
+        team.abbrv = abbreviations[team.name]
+
 def load_schedule_to_db_from_pl():
     with open('saved_schedule.pl','rb') as f:
         schedule = pickle.load(f)
@@ -178,6 +184,7 @@ def execute_regular_update():
 
 class Team(models.Model):
     name = models.TextField()
+    abbrv = models.TextField(default = '')
     wins = models.PositiveSmallIntegerField(default = 0)
     losses = models.PositiveSmallIntegerField(default = 0)
     ties = models.PositiveSmallIntegerField(default = 0)

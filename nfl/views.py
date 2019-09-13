@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
-from nfl.models import Player, Selection, Team, Game, add_to_email_backup, create_family_players, update_selections_from_pl, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week
+from nfl.models import Player, Selection, Team, Game, add_to_email_backup, add_abbreviations_to_teams, create_family_players, update_selections_from_pl, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week
 from nfl.forms import SelectionFormset
 import time
 from django.http import HttpResponseRedirect
@@ -15,6 +15,7 @@ def home_page(request):
     if not Team.objects.all():
         load_teams_to_db() #should elim from regular website load
         load_schedule_to_db_from_pl() # same as above
+        add_abbreviations_to_teams()
     if not Player.objects.all():
         create_family_players()
     if os.path.exists('manualpicks.pl'):
