@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
-from nfl.models import Player, Selection, Team, Game, add_to_email_backup, add_abbreviations_to_teams, create_family_players, update_selections_from_pl, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week
+from nfl.models import Player, Selection, Team, Game, add_to_email_backup, add_abbreviations_to_teams, create_family_players, update_selections_from_pl, load_schedule_to_db_from_pl, load_teams_to_db, execute_regular_update, generate_db_selections, get_current_week, get_current_datetime
 from nfl.forms import SelectionFormset
 import time
 from django.http import HttpResponseRedirect
@@ -72,6 +72,7 @@ def nfl_page(request, user, weekno):
     formset = SelectionFormset(queryset = predictions)
     standings = Player.objects.all().order_by('-wins')
     weekgames = Game.objects.filter(week_no = weekno)
+    weekstarted = any(_game.gametime < get_current_datetime() for _game in weekgames)
     picks = [OrderedDict(sorted({_player:(Selection.objects.get(player=_player, game=_game).prediction.abbrv
                            if Selection.objects.get(player=_player, game=_game).prediction is not None
                            else 'N/A') 
@@ -80,6 +81,7 @@ def nfl_page(request, user, weekno):
     picks = []
     for _game in weekgames:
         next_game_picks = {}
+        gamestarted = _game.gametime < get_current_datetime()
         for _player in standings:
             if Selection.objects.get(player=_player, game=_game).prediction is None:
                 next_game_picks[_player] = ('N/A',None)
@@ -88,7 +90,7 @@ def nfl_page(request, user, weekno):
                     Selection.objects.get(player=_player, game=_game).prediction.abbrv,
                     Selection.objects.get(player=_player, game=_game).success
                 )
-        picks.append(OrderedDict(sorted(next_game_picks.items(), key = lambda x: -x[0].wins)))
+        picks.append((gamestarted, OrderedDict(sorted(next_game_picks.items(), key = lambda x: -x[0].wins))))
 
 
     return render(request, 'nfl.html', {'player': player, 
@@ -97,7 +99,8 @@ def nfl_page(request, user, weekno):
                                         'weekno': weekno,
                                         'range': range(1,18),
                                         'picks': picks,
-                                        'weekgames': weekgames})
+                                        'weekgames': weekgames,
+                                        'weekstarted': weekstarted})
 
 def picks(request, user, weekno):
     if not request.user.is_authenticated:
