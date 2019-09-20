@@ -1,6 +1,7 @@
 from django.forms import ModelForm, modelformset_factory
 from django.db.models import Q
 from nfl.models import Selection, Team, Game, get_current_datetime
+from datetime import timedelta
 import django.forms as forms
 
 class SelectionForm(ModelForm):
@@ -20,8 +21,8 @@ class SelectionForm(ModelForm):
             self.fields['prediction'].queryset = Team.objects.filter(
                 Q(name = self.instance.game.home_team.name) | 
                 Q(name = self.instance.game.away_team.name))
-            if self.instance.game.gametime < get_current_datetime():
-                self.fields['prediction'].disabled = True
+            #if self.instance.game.gametime + timedelta(minutes = 10) < get_current_datetime():
+            #    self.fields['prediction'].disabled = True
 
 
 # SelectionFormset = modelformset_factory(Selection, fields=('prediction','game'), extra=0)
