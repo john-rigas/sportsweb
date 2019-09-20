@@ -24,11 +24,9 @@
                 <form method="POST" action="/{{ player.name }}/nfl/{{ weekno }}/picks">
                     {% csrf_token %}
                     <input type="submit" value="Submit">
-                    
                     <table>
                         {{ formset }}
-                    </table>
-                    
+                    </table> 
                     <input type="submit" value="Submit">
                 </form>
             </div>
@@ -92,6 +90,10 @@
                 {% endif %}
             </div>
             <div class='column'>
+                <table>
+                    <tr><td><a href="https://espn.com/nfl/scoreboard">NFL Scores</a></td></tr>
+                    <tr><td><a href="https://fantasy.espn.com/football/league/scoreboard?leagueId=929272">Fantasy League</a></td></tr> 
+                </table>
                 <h1>Change password</h1>
                 <form method="POST" action="/{{ player.name }}/changepassword">
                     <input name = 'newpassword'
