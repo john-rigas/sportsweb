@@ -73,23 +73,28 @@ def nfl_page(request, user, weekno):
     standings = Player.objects.all().order_by('-wins')
     weekgames = Game.objects.filter(week_no = weekno)
     weekstarted = any(_game.gametime < get_current_datetime() for _game in weekgames)
-    picks = [OrderedDict(sorted({_player:(Selection.objects.get(player=_player, game=_game).prediction.abbrv
-                           if Selection.objects.get(player=_player, game=_game).prediction is not None
-                           else 'N/A') 
-                           for _player in standings}.items(), key = lambda x: -x[0].wins)) for _game in weekgames]
-
+   
+    weekrecords = {_player: (0,0,0) for _player in standings}
     picks = []
     for _game in weekgames:
         next_game_picks = {}
         gamestarted = _game.gametime < get_current_datetime()
         for _player in standings:
-            if Selection.objects.get(player=_player, game=_game).prediction is None:
+            _selection = Selection.objects.get(player=_player, game=_game)
+            if _selection.prediction is None:
                 next_game_picks[_player] = ('N/A',None)
             else:
                 next_game_picks[_player] = (
-                    Selection.objects.get(player=_player, game=_game).prediction.abbrv,
-                    Selection.objects.get(player=_player, game=_game).success
+                    _selection.prediction.abbrv,
+                    _selection.objects.get(player=_player, game=_game).success
                 )
+                if _selection.success == 1:
+                    weekrecords[_player][0] += 1
+                elif _selection.success == 2:
+                    weekrecords[_player][1] += 1
+                elif _selection.success == 3:
+                    weekrecords[_player][2] += 1
+                    
         picks.append((gamestarted, OrderedDict(sorted(next_game_picks.items(), key = lambda x: -x[0].wins))))
 
 
@@ -100,7 +105,8 @@ def nfl_page(request, user, weekno):
                                         'range': range(1,18),
                                         'picks': picks,
                                         'weekgames': weekgames,
-                                        'weekstarted': weekstarted})
+                                        'weekstarted': weekstarted,
+                                        'weekrecords': weekrecords})
 
 def picks(request, user, weekno):
     if not request.user.is_authenticated:
