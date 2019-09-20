@@ -74,7 +74,7 @@ def nfl_page(request, user, weekno):
     weekgames = Game.objects.filter(week_no = weekno)
     weekstarted = any(_game.gametime < get_current_datetime() for _game in weekgames)
    
-    weekrecords = {_player: (0,0,0) for _player in standings}
+    weekrecords = {_player.name: (0,0,0) for _player in standings}
     picks = []
     for _game in weekgames:
         next_game_picks = {}
@@ -89,11 +89,11 @@ def nfl_page(request, user, weekno):
                     _selection.objects.get(player=_player, game=_game).success
                 )
                 if _selection.success == 1:
-                    weekrecords[_player][0] += 1
+                    weekrecords[_player.name][0] += 1
                 elif _selection.success == 2:
-                    weekrecords[_player][1] += 1
+                    weekrecords[_player.name][1] += 1
                 elif _selection.success == 3:
-                    weekrecords[_player][2] += 1
+                    weekrecords[_player.name][2] += 1
                     
         picks.append((gamestarted, OrderedDict(sorted(next_game_picks.items(), key = lambda x: -x[0].wins))))
 

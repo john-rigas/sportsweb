@@ -77,8 +77,8 @@
                             {% endif %}
                         {% endfor %}
                         <tr>
-                            {% for player in standings %}
-                                <td>{{ weekrecords.player }}</td>
+                            {% for playername, record in weekrecords %}
+                                <td>{{ record.0 }}-{{ record.1 }}-{{ record.2 }}</td>
                             {% endfor %}
                         </tr>
                     </table>
