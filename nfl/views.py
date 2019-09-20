@@ -86,7 +86,7 @@ def nfl_page(request, user, weekno):
             else:
                 next_game_picks[_player] = (
                     _selection.prediction.abbrv,
-                    _selection.objects.get(player=_player, game=_game).success
+                    _selection.success
                 )
                 if _selection.success == 1:
                     weekrecords[_player.name][0] += 1
