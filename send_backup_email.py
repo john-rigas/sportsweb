@@ -2,10 +2,11 @@ import pickle
 from django.core.mail import send_mail, EmailMessage
 import os
 import django
-from sportsweb import settings
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
 django.setup()
+
+from sportsweb import settings
 
 with open('email_backup.pl','rb') as f:
     message_text = pickle.load(f)
