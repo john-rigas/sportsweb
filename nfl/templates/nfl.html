@@ -23,6 +23,7 @@
 
                 <form method="POST" action="/{{ player.name }}/nfl/{{ weekno }}/picks">
                     {% csrf_token %}
+                    <input type="submit" value="Submit">
                     <table>
                         {{ formset }}
                     </table>
@@ -30,7 +31,7 @@
                 </form>
             </div>
             <div class="column">
-                <table>
+                <table width="80%">
                     <tr>STANDINGS</tr>
                     <tr>
                         <td></td>
