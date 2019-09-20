@@ -138,3 +138,23 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'fredandfredandfredandfred@gmail.com'
 ACCOUNT_EMAIL_SUBJECT_PREFIX = 'Fred and Fred'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
