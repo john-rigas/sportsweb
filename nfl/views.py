@@ -74,7 +74,7 @@ def nfl_page(request, user, weekno):
     weekgames = Game.objects.filter(week_no = weekno)
     weekstarted = any(_game.gametime < get_current_datetime() for _game in weekgames)
    
-    weekrecords = {_player.name: (0,0,0) for _player in standings}
+    weekrecords = {_player.name: [0,0,0] for _player in standings}
     picks = []
     for _game in weekgames:
         next_game_picks = {}
