@@ -184,7 +184,7 @@ def update_team_records():
 
 
 def get_game_winner(game):
-    if not game.home_score:
+    if not game.home_score and not game.away_score:
         winner = None
     elif game.home_score > game.away_score:
         winner = game.home_team
