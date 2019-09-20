@@ -77,17 +77,18 @@ def nfl_page(request, user, weekno):
                            else 'N/A') 
                            for _player in standings}.items(), key = lambda x: -x[0].wins)) for _game in weekgames]
 
-    picks = {}
+    picks = []
     for _game in weekgames:
+        next_game_picks = {}
         for _player in standings:
             if Selection.objects.get(player=_player, game=_game).prediction is None:
-                picks[_player] = ('N/A',None)
+                next_game_picks[_player] = ('N/A',None)
             else:
-                picks[_player] = (
+                next_game_picks[_player] = (
                     Selection.objects.get(player=_player, game=_game).prediction.abbrv,
                     Selection.objects.get(player=_player, game=_game).success
                 )
-    picks = OrderedDict(sorted(picks.items(), key = lambda x: -x[0].wins))
+        picks.append(OrderedDict(sorted(next_game_picks.items(), key = lambda x: -x[0].wins)))
 
 
     return render(request, 'nfl.html', {'player': player, 

@@ -61,7 +61,6 @@
                     {% for game in picks %}
                         <tr>
                             {% for player,pick in game.items %}
-                                {{ pick.0 }}
                                 {% if pick.1 == 1 %}
                                     <td style="background-color:rgb(132, 230, 132);">{{ pick.0 }}</td>
                                 {% elif pick.1 == 2 %}
