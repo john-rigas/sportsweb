@@ -4,6 +4,7 @@ from nfl.models import Selection, Team, Game, get_current_datetime
 from datetime import timedelta
 import django.forms as forms
 from django.utils.safestring import mark_safe
+from itertools import chain
 
 class SelectionForm(ModelForm):
     class Meta:
@@ -20,9 +21,11 @@ class SelectionForm(ModelForm):
             self.fields['game'].disabled = True
             self.fields['game'].widget = PlainTextWidget(str(self.instance.game))
             self.fields['prediction'].widget = forms.RadioSelect()
+
             self.fields['prediction'].queryset = Team.objects.filter(
                 Q(name = self.instance.game.home_team.name) | 
                 Q(name = self.instance.game.away_team.name))
+            
             if self.instance.game.gametime + timedelta(minutes = 10) < get_current_datetime():
                 self.fields['prediction'].disabled = True
 

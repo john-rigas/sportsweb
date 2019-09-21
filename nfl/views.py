@@ -20,7 +20,6 @@ def home_page(request):
         create_family_players()
     if os.path.exists('manualpicks.pl'):
         update_selections_from_pl()
-    #execute_regular_update() #same
     if 'user' in request.session.keys():
         weekno = get_current_week()
         username = request.session['user']
@@ -113,9 +112,9 @@ def picks(request, user, weekno):
         return redirect(f'/accounts/login/')
     player = Player.objects.get(name = user)
     formset = SelectionFormset(request.POST)
-    add_to_email_backup(player, Selection.objects.filter(player = player, game__week_no = weekno))
     if formset.is_valid():
         formset.save() # need to make sure this is safe
+    add_to_email_backup(player, Selection.objects.filter(player = player, game__week_no = weekno))
     return redirect(f'/{player.name}/nfl/{weekno}/')
 
 def change_password(request, user):
