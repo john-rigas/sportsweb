@@ -94,7 +94,7 @@ def nfl_page(request, user, weekno):
                 elif _selection.success == 3:
                     weekrecords[_player.name][2] += 1
                     
-        picks.append((gamestarted, OrderedDict(sorted(next_game_picks.items(), key = lambda x: -x[0].wins))))
+        picks.append((gamestarted, OrderedDict(sorted(next_game_picks.items(), key = lambda x: -x[0].wins)), f"{_game.away_team.abbrv} at {_game.home_team.abbrv}"))
 
 
     return render(request, 'nfl.html', {'player': player, 

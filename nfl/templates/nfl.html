@@ -52,18 +52,30 @@
                         </tr>
                     {% endfor %}
                 </table>
-                {% if weekstarted %}
+                <!-- {% if weekstarted %} -->
                     <table>
                         <tr></tr>
                         <tr>
+                            <td></td>
                             {% for player in standings %}
                                 <td>{{ player.name }}</td>
                             {% endfor %}
                         </tr>
-                        {% for gamestarted, game in picks %}
-                            {% if gamestarted %}
-                                <tr>
-                                    {% for player,pick in game.items %}
+                        <tr>
+                            <td></td>
+                            {% for playername,record in weekrecords.items %}
+                                {% if record.2 > 0 %}
+                                    <td>{{ record.0 }}-{{ record.1 }}-{{ record.2 }}</td>
+                                {% else %}
+                                    <td>{{ record.0 }}-{{ record.1 }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% for gamestarted, game, gamestring in picks %}
+                            <tr>
+                                <td>{{ gamestring }}</td>
+                                {% for player,pick in game.items %}
+                                    {% if gamestarted %}    
                                         {% if pick.1 == 1 %}
                                             <td style="background-color:rgb(132, 230, 132);">{{ pick.0 }}</td>
                                         {% elif pick.1 == 2 %}
@@ -73,21 +85,18 @@
                                         {% else %}
                                             <td>{{ pick.0 }}</td>
                                         {% endif %}
-                                    {% endfor %}
-                                </tr>
-                            {% endif %}
+                                    {% else %}
+                                        {% if pick.0 == 'N/A' %}
+                                            <td></td>
+                                        {% else %}
+                                            <td>X</td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
                         {% endfor %}
-                        <tr>
-                            {% for playername,record in weekrecords.items %}
-                                {% if record.2 > 0 %}
-                                    <td>{{ record.0 }}-{{ record.1 }}-{{ record.2 }}</td>
-                                {% else %}
-                                    <td>{{ record.0 }}-{{ record.1 }}</td>
-                                {% endif %}
-                            {% endfor %}
-                        </tr>
                     </table>
-                {% endif %}
+                <!-- {% endif %} -->
             </div>
             <div class='column'>
                 <table>
