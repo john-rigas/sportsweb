@@ -29,14 +29,15 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
     if gamekey == args.gamekey:
 
         for player in models.Player.objects.all():
-            user = User.objects.get(username = player.name)
+            if not player.name == 'jenkins'
+                user = User.objects.get(username = player.name)
 
-            if any(selection.prediction == None for selection in models.Selection.objects.filter(player = player, game__gametime = gametime)):
-                
-                message = f'Dear {player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
+                if any(selection.prediction == None for selection in models.Selection.objects.filter(player = player, game__gametime = gametime)):
+                    
+                    message = f'Dear {player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
 
-                send_mail('You are running out of time to make your nfl picks',
-                          message,
-                          settings.DEFAULT_FROM_EMAIL,
-                          [user.email], # SHOULD BE: user.email
-                          fail_silently=False)
+                    send_mail('You are running out of time to make your nfl picks',
+                            message,
+                            settings.DEFAULT_FROM_EMAIL,
+                            [user.email], # SHOULD BE: user.email
+                            fail_silently=False)
