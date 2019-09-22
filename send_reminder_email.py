@@ -38,5 +38,5 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
                 send_mail('You are running out of time to make your nfl picks',
                           message,
                           settings.DEFAULT_FROM_EMAIL,
-                          [user.email], # SHOULD BE: user.email
+                          [''], # SHOULD BE: user.email
                           fail_silently=False)
