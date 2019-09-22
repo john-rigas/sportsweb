@@ -29,7 +29,7 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
     if gamekey == args.gamekey:
 
         for player in models.Player.objects.all():
-            if not player.name == 'jenkins'
+            if not player.name == 'jenkins':
                 user = User.objects.get(username = player.name)
 
                 if any(selection.prediction == None for selection in models.Selection.objects.filter(player = player, game__gametime = gametime)):
