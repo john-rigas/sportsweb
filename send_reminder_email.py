@@ -1,3 +1,10 @@
+import os
+import django
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
+django.setup()
+
+
 from django.contrib.auth.models import User
 import argparse
 from datetime import timedelta
@@ -5,14 +12,11 @@ from nfl import models
 from sportsweb import settings
 import pickle
 from django.core.mail import send_mail
-import os
-import django
+
 import subprocess
 from utils import get_current_week
 from twilio.rest import Client
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
-django.setup()
 
 
 parser = argparse.ArgumentParser(description='send_reminder_email')
