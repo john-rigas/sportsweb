@@ -18,11 +18,17 @@ from django.urls import path, include
 from nfl import views as nfl_views
 
 urlpatterns = [
-    path('', nfl_views.home_page, name = 'home'),
-    path('accounts/new', nfl_views.new_user, name = 'new_user'),
-    path('accounts/login', nfl_views.login_user, name = 'login'),
-    path('accounts/logout', nfl_views.logout_user, name = 'logout'),
-    path('<str:user>/nfl/<int:weekno>/', nfl_views.nfl_page, name = 'nfl_page'),
-    path('<str:user>/nfl/<int:weekno>/picks', nfl_views.picks, name = 'picks'),
-    path('<str:user>/changepassword', nfl_views.change_password, name = 'changepassword')
+    path('', nfl_views.home_page, name='home'),
+    #path('accounts/new', nfl_views.new_user, name = 'new_user'),
+    path('accounts/login', nfl_views.login_user, name='login'),
+    path('accounts/logout', nfl_views.logout_user, name='logout'),
+    path('<str:user>/nfl/<int:weekno>/', nfl_views.nfl_page, name='nfl_page'),
+    path('<str:user>/nfl/<int:weekno>/picks', nfl_views.picks, name='picks'),
+    path('<str:user>/password/',
+         nfl_views.password, name='password'),
+    path('<str:user>/password/change',
+         nfl_views.change_password, name='changepassword'),
+    path('password', nfl_views.user_password, name='userpassword'),
+    path('<str:user>/nfl/<int:weekno>/standings/', nfl_views.nfl_standings, name='nflstandings'),
+    path('<str:user>/nfl/<int:weekno>/results/', nfl_views.nfl_results, name='nflresult')
 ]

@@ -9,18 +9,18 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
 django.setup()
 
 from sportsweb import settings
-from nfl import models
+from nfl import models, utils
 
 reminder_schedule = {}
 
 gamekey = 0
-for game in models.Game.objects.filter(week_no = models.get_current_week()):
+for game in models.Game.objects.filter(week_no = utils.get_current_week()):
     if all(game.gametime != t for k,t in reminder_schedule.keys()):
         reminder_schedule[(gamekey, game.gametime)] = []
         gamekey += 1
     reminder_schedule[(gamekey - 1, game.gametime)].append(game)
 
-with open('this_weeks_reminders.pl','wb') as f:
+with open('this_weeks_reminders.pl','wb') as f: 
     pickle.dump(reminder_schedule, f)
 
 if os.path.exists('/tmp/remindercrondump'):

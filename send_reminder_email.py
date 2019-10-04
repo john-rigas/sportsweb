@@ -1,27 +1,33 @@
+from django.contrib.auth.models import User
+import argparse
+from datetime import timedelta
+from nfl import models
+from sportsweb import settings
 import pickle
 from django.core.mail import send_mail
 import os
 import django
 import subprocess
+from utils import get_current_week
+from twilio.rest import Client
+
+asid = "".join([l for l in 'AC7c8410d208bbbd096eb533b84638f61e'])
+atok = "".join([l for l in 'eb90ad4ae4544a8e750aca62e62ef8a4'])
+tnum = "".join([l for l in '+12172861532'])
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
 django.setup()
 
-from sportsweb import settings
-from nfl import models
-from datetime import timedelta
-import argparse
-from django.contrib.auth.models import User
 
 parser = argparse.ArgumentParser(description='send_reminder_email')
-parser.add_argument('--time', type = int)
-parser.add_argument('--gamekey', type = int)
+parser.add_argument('--time', type=int)
+parser.add_argument('--gamekey', type=int)
 args = parser.parse_args()
 
-with open('this_weeks_reminders.pl','rb') as f:
+with open('this_weeks_reminders.pl', 'rb') as f:
     reminder_schedule = pickle.load(f)
 
-weekno = models.get_current_week()
+weekno = get_current_week()
 time_remaining = '3 hours' if args.time == 0 else '15 minutes'
 
 for (gamekey, gametime), gameset in reminder_schedule.items():
@@ -29,15 +35,21 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
     if gamekey == args.gamekey:
 
         for player in models.Player.objects.all():
-            if not player.name == 'jenkins':
-                user = User.objects.get(username = player.name)
 
-                if any(selection.prediction == None for selection in models.Selection.objects.filter(player = player, game__gametime = gametime)):
-                    
-                    message = f'Dear {player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
+            user = User.objects.get(username=player.name)
 
+            if any(selection.prediction == None for selection in models.Selection.objects.filter(player=player, game__gametime=gametime)):
+
+                message = f'Dear {player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
+
+                if player.name in ['andrew', 'david', 'johnny', 'unclemike', 'uncletim', 'papou', 'doc']:
                     send_mail('You are running out of time to make your nfl picks',
-                            message,
-                            settings.DEFAULT_FROM_EMAIL,
-                            [user.email], # SHOULD BE: user.email
-                            fail_silently=False)
+                              message,
+                              settings.DEFAULT_FROM_EMAIL,
+                              [user.email],
+                              fail_silently=False)
+
+                if player.name in ['chris', 'johnny']:
+                    twilioCli = Client(asid, atok)
+                    text_message = twilioCli.messages.create(
+                        body=message, from_=tnum, to=player.cell)

@@ -8,12 +8,19 @@ def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}'  
     run(f'mkdir -p {site_folder}')  
     with cd(site_folder):  
+        _set_timezone()
         _get_latest_source()
         _update_virtualenv()
         _create_or_update_dotenv()
         _update_static_files()
         _update_database()
         _add_cronjobs()
+
+def _set_timezone():
+    #sudo('sudo mv /etc/localtime /etc/localtime.old')
+    #sudo('sudo cp /usr/share/zoneinfo/America/New_York /etc/localtime')
+    pass
+    #figure out sudo
 
 def _get_latest_source():
     if exists('.git'):  
