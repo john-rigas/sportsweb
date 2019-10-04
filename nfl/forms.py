@@ -6,9 +6,6 @@ import django.forms as forms
 from django.utils.safestring import mark_safe
 from itertools import chain
 from nfl.utils import get_current_datetime
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout
-from crispy_forms.bootstrap import InlineRadios, InlineCheckboxes
 
 
 class SelectionForm(ModelForm):
