@@ -2402,7 +2402,8 @@ input::-moz-focus-inner {
 		margin: 0;
 		padding: 0;
 		border: 0;
-		/* font-family: "Merriweather", Georgia, serif; */
+		font-family: "Merriweather", Georgia, serif;
+		transform: scale(1.4);
 	}
 
 		input[type="checkbox"] + label,

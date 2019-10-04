@@ -65,7 +65,7 @@
 					{% csrf_token %}
 					<input type="submit" value="Submit">
 					{{ formset.management_form }}
-					<table>
+					<table style="margin-top: 2em;">
 						{% for form in formset %}
 						{{ form }}
 						{% endfor %}
