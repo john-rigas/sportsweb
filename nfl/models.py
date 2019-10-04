@@ -264,7 +264,7 @@ class SelectionManager(models.Manager):
     def build_missed_games_dict(self):
         missed_games = {}
         for selection in self.model.objects.all():
-            if selection.game.gametime + timedelta(days=1) < utils.get_current_datetime():
+            if selection.game.gametime + timedelta(hours = 15) < utils.get_current_datetime():
                 if selection.prediction == None:
                     if selection.player.name not in missed_games.keys():
                         missed_games[selection.player.name] = {}
