@@ -11,10 +11,6 @@ import subprocess
 from utils import get_current_week
 from twilio.rest import Client
 
-asid = "".join([l for l in 'AC7c8410d208bbbd096eb533b84638f61e'])
-atok = "".join([l for l in 'eb90ad4ae4544a8e750aca62e62ef8a4'])
-tnum = "".join([l for l in '+12172861532'])
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sportsweb.settings")
 django.setup()
 
