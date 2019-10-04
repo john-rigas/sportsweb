@@ -203,7 +203,7 @@ def picks(request, user, weekno):
         formset.save()  # need to make sure this is safe
     Selection.objects.add_to_email_backup(player, Selection.objects.filter(
         player=player, game__week_no=weekno))
-    return redirect(f'/{player.name}/nfl/{weekno}/')
+    return redirect(f'/{player.name}/nfl/{weekno}/#picks')
 
 
 def password(request, user):
