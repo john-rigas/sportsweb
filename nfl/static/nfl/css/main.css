@@ -3045,6 +3045,21 @@ input::-moz-focus-inner {
 					font-size: 0.9rem;
 				}
 
+				.table-big {
+					display: none;
+				}
+
+
+			}
+
+			@media screen and (min-width: 980px) {
+
+				.table-small {
+					display: none;
+					opacity: 0;
+				}
+
+
 			}
 
 		table thead {

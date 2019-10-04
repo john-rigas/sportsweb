@@ -68,7 +68,32 @@
 		<!-- Main -->
 		<div id="main">
 			<article class="post featured">
-				<table width="40%" height="15%">
+				<table class="table-small">
+					<tr>
+						<td colspan="7">STANDINGS</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>Player</td>
+						<td></td>
+						<td>W</td>
+						<td>L</td>
+						<td>T</td>
+						<td>GB</td>
+					</tr>
+					{% for player in standings %}
+					<tr>
+						<td>{{ forloop.counter }}:</td>
+						<td> {{ player.name }}</td>
+						<td></td>
+						<td> {{ player.wins|add:player.fwins }}</td>
+						<td> {{ player.losses|add:player.flosses }}</td>
+						<td> {{ player.ties|add:player.fties }}</td>
+						<td> {{ player.gb }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+				<table class="table-big">
 					<tr>
 						<td colspan="3"></td>
 						<td colspan="4">OVERALL</td>
