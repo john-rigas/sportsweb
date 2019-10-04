@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-
+{% load static %}
 <html>
 
 <head>
     <title>Fred and Fred</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="{% static 'nfl/css/main.css' %}" />
+    <noscript>
+        <link rel="stylesheet" type="text/css" href="{% static 'nfl/css/noscript.css' %}" /></noscript>
 </head>
 
 <body>
-    <h1>Sign-In</h1>
-    <form method="POST" action="/accounts/login">
-        <input name='username' id="id_username" class="form-control input-lg" placeholder='username' />
-        <input name='password' id="id_password" class="form-control input-lg" placeholder='password' />
-        <input type="submit" value="Submit">
-        {% csrf_token %}
-    </form>
-    <!-- <h1>Register</h1>
+    <div id="intro">
+        <h1>FRED AND FRED</h1>
+        <h4>Sign-In</h4>
+        <form method="POST" action="/accounts/login">
+            <input name='username' id="id_username" type="text" class="form-control input-lg" placeholder='username' />
+            <input name='password' id="id_password" type="text" class="form-control input-lg" placeholder='password' />
+            <input type="submit" value="Submit">
+            {% csrf_token %}
+        </form>
+
+        <!-- <h1>Register</h1>
         <form method="POST" action="/accounts/new">
             <input name = 'username'
                 id = "id_username"
@@ -31,12 +39,13 @@
             <input type="submit" value="Submit">
         {% csrf_token %}
         </form> -->
-    <h1>Change password</h1>
-    <form method="POST" action="/password">
-        <input name='username' id="id_username" class="form-control input-lg" placeholder='username' />
-        <input type="submit" value="Change Password">
-        {% csrf_token %}
-    </form>
+        <h4>Change password</h4>
+        <form method="POST" action="/password">
+            <input name='username' id="id_username" type="text" class="form-control input-lg" placeholder='username' />
+            <input type="submit" value="Change Password">
+            {% csrf_token %}
+        </form>
+    </div>
 </body>
 
 </html>

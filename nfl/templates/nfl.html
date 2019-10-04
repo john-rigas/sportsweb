@@ -69,8 +69,11 @@
 				<form method="POST" action="/{{ player.name }}/nfl/{{ weekno }}/picks">
 					{% csrf_token %}
 					<input type="submit" value="Submit">
+					{{ formset.management_form }}
 					<table>
-						{{ formset }}
+						{% for form in formset %}
+						{{ form }}
+						{% endfor %}
 					</table>
 					<input type="submit" value="Submit">
 				</form>
@@ -195,9 +198,28 @@
 	</div>
 
 	<!-- Footer -->
-	<!-- <footer id="footer">
-			<section>
-				<form method="post" action="#">
+	<footer id="footer">
+		<table>
+			<tr>
+				<td><a href="https://espn.com/nfl/scoreboard">NFL Scores</a></td>
+			</tr>
+			<tr>
+				<td><a href="https://fantasy.espn.com/football/league/scoreboard?leagueId=929272">Fantasy League</a>
+				</td>
+			</tr>
+		</table>
+		<section>
+			<form method="POST" action="/accounts/logout">
+				<input type="submit" value="Logout">
+				{% csrf_token %}
+			</form>
+			<form method="POST" action="/{{ player.name }}/password/">
+				<input type="submit" value="Change Password">
+				{% csrf_token %}
+			</form>
+		</section>
+	</footer>
+	<!-- <form method="post" action="#">
 					<div class="fields">
 						<div class="field">
 							<label for="name">Name</label>
@@ -241,9 +263,8 @@
 						</li>
 						<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
 					</ul>
-				</section>
-			</section>
-		</footer> -->
+				</section> -->
+
 
 	<!-- Copyright -->
 	<!-- <div id="copyright">

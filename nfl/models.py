@@ -114,7 +114,7 @@ class Game(models.Model):
     objects = GameManager()
 
     def __str__(self):
-        return str(self.gametime.strftime("%b %d %Y %H:%M")) + ' ' + self.away_team.name + ' at ' + self.home_team.name
+        return str(self.gametime.strftime("%b %d %Y  -  %H:%M")) + ' - ' + self.away_team.name + ' at ' + self.home_team.name
 
     def get_game_winner(self):
         if not self.home_score and not self.away_score:

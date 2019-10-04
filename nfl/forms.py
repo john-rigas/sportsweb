@@ -1,4 +1,4 @@
-from django.forms import ModelForm, modelformset_factory
+from django.forms import ModelForm, modelformset_factory, widgets
 from django.db.models import Q
 from nfl.models import Selection, Team, Game
 from datetime import timedelta
@@ -24,8 +24,9 @@ class SelectionForm(ModelForm):
             self.fields['game'].disabled = True
             self.fields['game'].widget = PlainTextWidget(
                 str(self.instance.game))
-            #self.fields['prediction'].widget = forms.RadioSelect()
-
+            self.fields['prediction'].label = ''
+            self.fields['game'].label = ''
+            self.fields['prediction'].widget = forms.Select()
             self.fields['prediction'].queryset = Team.objects.filter(
                 Q(name=self.instance.game.home_team.name) |
                 Q(name=self.instance.game.away_team.name))
@@ -45,3 +46,5 @@ class PlainTextWidget(forms.Widget):
 
     def render(self, name, value, attrs=None, renderer=None):
         return mark_safe(self.display) if self.display is not None else '-'
+
+

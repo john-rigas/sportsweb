@@ -118,7 +118,27 @@
 		</div>
 
 	</div>
-
+	<footer id="footer">
+		<table>
+			<tr>
+				<td><a href="https://espn.com/nfl/scoreboard">NFL Scores</a></td>
+			</tr>
+			<tr>
+				<td><a href="https://fantasy.espn.com/football/league/scoreboard?leagueId=929272">Fantasy League</a>
+				</td>
+			</tr>
+		</table>
+		<section>
+			<form method="POST" action="/accounts/logout">
+				<input type="submit" value="Logout">
+				{% csrf_token %}
+			</form>
+			<form method="POST" action="/{{ player.name }}/password/">
+				<input type="submit" value="Change Password">
+				{% csrf_token %}
+			</form>
+		</section>
+	</footer>
 	<!-- Scripts -->
 	<script src="{% static 'nfl/js/jquery.min.js' %}"></script>
 	<script src="{% static 'nfl/js/jquery.scrollex.min.js' %}"></script>
