@@ -2403,7 +2403,7 @@ input::-moz-focus-inner {
 		padding: 0;
 		border: 0;
 		font-family: "Merriweather", Georgia, serif;
-		transform: scale(1.4);
+		transform: scale(1.75);
 	}
 
 		input[type="checkbox"] + label,
