@@ -2,6 +2,7 @@
 
 
 {% load static %}
+<!-- {% load crispy_forms_tags %} -->
 <!--
 	Massively by HTML5 UP
 	html5up.net | @ajlkn
@@ -44,12 +45,7 @@
 				<li><a href="/{{ player.name }}/nfl/{{ weekno }}/standings/#standings">Standings</a></li>
 				<li><a href="/{{ player.name }}/nfl/{{ weekno }}/results/#results">Results</a></li>
 			</ul>
-			<!-- <ul class="icons">
-				<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-				<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-				<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-				<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-			</ul> -->
+
 			<ul>
 				<select name="weekno" id="weekmenu" onchange="location=this.value;">
 					{% for i in range %}

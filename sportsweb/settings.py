@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'nfl'
+    'nfl',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -158,3 +159,5 @@ LOGGING = {
         },
     },
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

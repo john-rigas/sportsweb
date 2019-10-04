@@ -6,6 +6,9 @@ import django.forms as forms
 from django.utils.safestring import mark_safe
 from itertools import chain
 from nfl.utils import get_current_datetime
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout
+from crispy_forms.bootstrap import InlineRadios, InlineCheckboxes
 
 
 class SelectionForm(ModelForm):
@@ -26,13 +29,20 @@ class SelectionForm(ModelForm):
                 str(self.instance.game))
             self.fields['prediction'].label = ''
             self.fields['game'].label = ''
-            self.fields['prediction'].widget = forms.Select()
+            self.fields['prediction'].widget = forms.RadioSelect()
+            self.fields['prediction'].choice_label = ''
             self.fields['prediction'].queryset = Team.objects.filter(
                 Q(name=self.instance.game.home_team.name) |
                 Q(name=self.instance.game.away_team.name))
 
             if self.instance.game.gametime + timedelta(minutes=10) < get_current_datetime():
                 self.fields['prediction'].disabled = True
+
+            self.helper = FormHelper()
+
+            self.helper.layout = Layout(
+                InlineRadios('prediction')
+            )
 
 
 # SelectionFormset = modelformset_factory(Selection, fields=('prediction','game'), extra=0)
