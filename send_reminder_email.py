@@ -14,7 +14,7 @@ import pickle
 from django.core.mail import send_mail
 
 import subprocess
-from utils import get_current_week
+from nfl.utils import get_current_week
 from twilio.rest import Client
 
 

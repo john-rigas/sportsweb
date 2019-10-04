@@ -3,3 +3,4 @@ django
 gunicorn==19.9.0
 django-sendgrid-v5
 django-crispy-forms
+twilio
