@@ -53,8 +53,8 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
                               [user.email],
                               fail_silently=False)
 
-                # if player.name in ['chris', 'johnny']:
-                if player.name == 'johnny':
+                if player.name in ['chris', 'johnny', 'andrew','david','doc']:
+                #if player.name == 'johnny':
                     twilioCli = Client(phone['account'], phone['token'])
                     text_message = twilioCli.messages.create(
                         body=message, from_=phone['number'], to=player.cell)

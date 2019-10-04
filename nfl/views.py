@@ -11,6 +11,7 @@ from sportsweb.users import create_user, change_user_password
 from collections import OrderedDict
 import os.path
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 def home_page(request):
@@ -200,6 +201,9 @@ def picks(request, user, weekno):
     player = Player.objects.get(name=user)
     formset = SelectionFormset(request.POST)
     if formset.is_valid():
+        total_submitted = sum(1 for form in formset if form.cleaned_data.get('prediction') != None)
+        total = len(formset)
+        messages.success(request, f'Success: You have completed {total_submitted} of {total} picks')
         formset.save()  # need to make sure this is safe
     Selection.objects.add_to_email_backup(player, Selection.objects.filter(
         player=player, game__week_no=weekno))

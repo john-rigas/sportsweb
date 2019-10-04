@@ -61,6 +61,13 @@
 		<!-- Main -->
 		<div id="main">
 			<article class="post featured">
+				{% if messages %}
+				<ul class="messages" style="color:green;">
+					{% for message in messages %}
+					<li {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+					{% endfor %}
+				</ul>
+				{% endif %}
 				<form method="POST" action="/{{ player.name }}/nfl/{{ weekno }}/picks">
 					{% csrf_token %}
 					<input type="submit" value="Submit">
