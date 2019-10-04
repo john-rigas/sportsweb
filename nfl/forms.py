@@ -35,11 +35,6 @@ class SelectionForm(ModelForm):
             if self.instance.game.gametime + timedelta(minutes=10) < get_current_datetime():
                 self.fields['prediction'].disabled = True
 
-            self.helper = FormHelper()
-
-            self.helper.layout = Layout(
-                InlineRadios('prediction')
-            )
 
 
 # SelectionFormset = modelformset_factory(Selection, fields=('prediction','game'), extra=0)
