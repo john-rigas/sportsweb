@@ -20,6 +20,9 @@ parser.add_argument('--time', type=int)
 parser.add_argument('--gamekey', type=int)
 args = parser.parse_args()
 
+with open('../../twilio/phone.pl','rb') as f:
+    phone = pickle.load(f)
+
 with open('this_weeks_reminders.pl', 'rb') as f:
     reminder_schedule = pickle.load(f)
 
@@ -38,14 +41,16 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
 
                 message = f'Dear {player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
 
-                if player.name in ['andrew', 'david', 'johnny', 'unclemike', 'uncletim', 'papou', 'doc']:
+                # if player.name in ['andrew', 'david', 'johnny', 'unclemike', 'uncletim', 'papou', 'doc']:
+                if player.name == 'johnny':
                     send_mail('You are running out of time to make your nfl picks',
                               message,
                               settings.DEFAULT_FROM_EMAIL,
                               [user.email],
                               fail_silently=False)
 
-                if player.name in ['chris', 'johnny']:
-                    twilioCli = Client(asid, atok)
+                # if player.name in ['chris', 'johnny']:
+                if player.name == 'johnny':
+                    twilioCli = Client(phone['account'], phone['token'])
                     text_message = twilioCli.messages.create(
-                        body=message, from_=tnum, to=player.cell)
+                        body=message, from_=phone['number'], to=player.cell)
