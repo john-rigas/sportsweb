@@ -56,6 +56,8 @@ def logout_user(request):
 def nfl_page(request, user, weekno):
     if not request.user.is_authenticated:
         return redirect(f'/accounts/login/')
+    if not request.user.username == user:
+        return redirect('/accounts/logout')
     player = Player.objects.get(name=user)
     predictions = Selection.objects.filter(
         player=player).filter(game__week_no=weekno)
