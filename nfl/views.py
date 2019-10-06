@@ -111,7 +111,7 @@ def nfl_page(request, user, weekno):
 
 def nfl_standings(request, user, weekno):
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     player = Player.objects.get(name=user)
     predictions = Selection.objects.filter(
         player=player).filter(game__week_no=weekno)
@@ -164,7 +164,7 @@ def nfl_standings(request, user, weekno):
 
 def nfl_results(request, user, weekno):
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     player = Player.objects.get(name=user)
     predictions = Selection.objects.filter(
         player=player).filter(game__week_no=weekno)
@@ -216,7 +216,7 @@ def nfl_history(request, user):
     weekno = get_current_week()
     current_player = Player.objects.get(name=user)
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     standings = Player.objects.extra(
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'history.html', {
@@ -230,7 +230,7 @@ def nfl_history_regular(request, user):
     weekno = get_current_week()
     current_player = Player.objects.get(name=user)
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     standings = Player.objects.extra(
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'regularhistory.html', {
@@ -244,7 +244,7 @@ def nfl_history_playoffs(request, user):
     weekno = get_current_week()
     current_player = Player.objects.get(name=user)
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     standings = Player.objects.extra(
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'playoffhistory.html', {
@@ -259,7 +259,7 @@ def nfl_history_regular_year(request, user, year):
     weekyear = [(wk, year) for wk in range(17,0,-1)]
     current_player = Player.objects.get(name=user)
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     standings = Player.objects.extra(
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'regularhistoryyear.html', {
@@ -276,7 +276,7 @@ def nfl_history_playoffs_year(request, user, year):
     weekyear = [(wk, year) for wk in range(21,17,-1)]
     current_player = Player.objects.get(name=user)
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     standings = Player.objects.extra(
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'playoffhistoryyear.html', {
@@ -293,7 +293,7 @@ def nfl_history_year(request, user, year):
     weekyear = [(wk, year) for wk in range(21,0,-1)]
     current_player = Player.objects.get(name=user)
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     standings = Player.objects.extra(
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'yearhistory.html', {
@@ -344,7 +344,7 @@ def nfl_player(request, user, player):
 
 def picks(request, user, weekno):
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     player = Player.objects.get(name=user)
     formset = SelectionFormset(request.POST)
     if formset.is_valid():
