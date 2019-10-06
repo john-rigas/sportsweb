@@ -76,6 +76,15 @@
                 </td>
                 {% endfor %}
             </table>
+            <table class="table-small">
+                {% for cur_player in standings %}
+                <tr>
+                    <td><a
+                            href="/{{ player.name }}/nfl/players/{{ cur_player.name }}/#players">{{ cur_player.name }}</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
         </div>
 
 
