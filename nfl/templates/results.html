@@ -56,9 +56,9 @@
 				<select name="weekno" id="weekmenu" onchange="location=this.value;">
 					{% for i,wk in weekmenu.items %}
 					{% if i == weekno %}
-					<option value="/{{ player.name }}/nfl/{{ i }}/#picks" selected>{{ wk }}</option>
+					<option value="/{{ player.name }}/nfl/{{ i }}/results/#results" selected>{{ wk }}</option>
 					{% else %}
-					<option value="/{{ player.name }}/nfl/{{ i }}/#picks">{{ wk }}</option>
+					<option value="/{{ player.name }}/nfl/{{ i }}/results/#results">{{ wk }}</option>
 					{% endif %}
 					{% endfor %}
 				</select>
