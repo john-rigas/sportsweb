@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+
+
+{% load static %}
+{% load nfl_extras %}
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Fred and Fred</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="{% static 'nfl/css/main.css' %}" />
+    <noscript>
+        <link rel="stylesheet" type="text/css" href="{% static 'nfl/css/noscript.css' %}" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper" class="fade-in">
+
+        <!-- Intro -->
+        <div id="intro">
+            <h1>Fred and Fred</h1>
+            <p></p>
+            <ul class="actions">
+                <li><a href="#header" class="button icon solid solo fa-arrow-down scrolly">Continue</a></li>
+            </ul>
+        </div>
+
+        <!-- Header -->
+        <header id="header">
+            <a href="index.html" class="logo">NFL Picks</a>
+        </header>
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <ul class="links">
+                    <li><a href="/{{ player.name }}/nfl/{{ weekno }}/#picks">Make Picks</a></li>
+                    <li><a href="/{{ player.name }}/nfl/{{ weekno }}/standings/#standings">Standings</a></li>
+                    <li><a href="/{{ player.name }}/nfl/{{ weekno }}/results/#results">Results</a></li>
+                    <li class="active"><a name="history" href="">History</a></li>
+                    <li><a href="/{{ player.name }}/nfl/players/">Players</a></li>
+                </ul>
+            </ul>
+            <!-- <ul class="icons">
+				<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+			</ul> -->
+            <!-- <ul>
+				<select name="weekno" id="weekmenu" onchange="location=this.value;">
+					{% for i,wk in weekmenu.items %}
+					{% if i == weekno %}
+					<option value="/{{ player.name }}/nfl/{{ i }}/#picks" selected>{{ wk }}</option>
+					{% else %}
+					<option value="/{{ player.name }}/nfl/{{ i }}/#picks">{{ wk }}</option>
+					{% endif %}
+					{% endfor %}
+				</select>
+			</ul> -->
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+            <table class="table-big" id="hist-big">
+                <tr>
+                    <td colspan="1"><a href="/{{ player.name }}/nfl/history/{{ year }}/#history">OVERALL</a></td>
+                    <td colspan="2"><a href="/{{ player.name }}/nfl/history/regular/{{ year }}/#history">REGULAR
+                            SEASON</a></td>
+                    <td colspan="2"><a href="/{{ player.name }}/nfl/history/playoffs/{{ year }}/#history">PLAYOFFS</a>
+                </tr>
+                <tr>
+                    <td></td>
+                    {% for cur_player in standings %}
+                    <td><a href="/{{ player.name }}/nfl/players/{{ cur_player.name }}/">{{ cur_player.name }}</a></td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>{{ year }} Overall</td>
+                    {% for cur_player in standings %}
+                    <td>{{ cur_player.name|calc_yearrecord:year }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    <td>%</td>
+                    {% for cur_player in standings %}
+                    <td>{{ cur_player.name|calc_yearpercent:year }}</td>
+                    {% endfor %}
+                </tr>
+                {% for wkyr in weekyear %}
+                <tr>
+                    <!-- fix for  playoffs  -->
+                    <td>{{ wkyr.0|week_or_playoff }}</a></td>
+                    {% for cur_player in standings %}
+                    <td>{{ cur_player.name|calc_weekrecord:wkyr }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+
+
+    </div>
+    <footer id="footer">
+        <table>
+            <tr>
+                <td><a href="https://espn.com/nfl/scoreboard">NFL Scores</a></td>
+            </tr>
+            <tr>
+                <td><a href="https://fantasy.espn.com/football/league/scoreboard?leagueId=929272">Fantasy League</a>
+                </td>
+            </tr>
+        </table>
+        <section>
+            <form method="POST" action="/accounts/logout">
+                <input type="submit" value="Logout">
+                {% csrf_token %}
+            </form>
+            <form method="POST" action="/{{ player.name }}/password/">
+                <input type="submit" value="Change Password">
+                {% csrf_token %}
+            </form>
+        </section>
+    </footer>
+    <!-- Scripts -->
+    <script src="{% static 'nfl/js/jquery.min.js' %}"></script>
+    <script src="{% static 'nfl/js/jquery.scrollex.min.js' %}"></script>
+    <script src="{% static 'nfl/js/jquery.scrolly.min.js' %}"></script>
+    <script src="{% static 'nfl/js/browser.min.js' %}"></script>
+    <script src="{% static 'nfl/js/breakpoints.min.js' %}"></script>
+    <script src="{% static 'nfl/js/util.js' %}"></script>
+    <script src="{% static 'nfl/js/main.js' %}"></script>
+
+</body>
+
+</html>
