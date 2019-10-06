@@ -302,3 +302,22 @@ class Selection(models.Model):
     success = models.PositiveSmallIntegerField(
         default=0)  # 0:NA, 1:W, 2:L, 3:T 4:forgot 5:fwin 6:floss 7: ftie
     objects = SelectionManager()
+
+class WeekRecord(models.Model):
+    player = models.ForeignKey(Player, models.CASCADE)
+    year = models.PositiveIntegerField(default = 2019)
+    wins = models.PositiveSmallIntegerField(default = 0)
+    losses = models.PositiveSmallIntegerField(default = 0)
+    ties = models.PositiveSmallIntegerField(default = 0)
+    week_no = models.PositiveSmallIntegerField()
+
+class TeamRecord(models.Model):
+    timeframe = models.TextField(choices = [('C','Career'),('Y','Year')])
+    player = models.ForeignKey(Player, models.CASCADE)
+    team = models.ForeignKey(Team, models.CASCADE)
+    wins = models.PositiveSmallIntegerField(default = 0)
+    losses = models.PositiveSmallIntegerField(default = 0)
+    ties = models.PositiveSmallIntegerField(default = 0)
+
+
+

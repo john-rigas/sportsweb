@@ -43,15 +43,17 @@
 				<li class="active"><a name="picks" href="#picks">Make Picks</a></li>
 				<li><a href="/{{ player.name }}/nfl/{{ weekno }}/standings/#standings">Standings</a></li>
 				<li><a href="/{{ player.name }}/nfl/{{ weekno }}/results/#results">Results</a></li>
+				<li><a href="/{{ player.name }}/nfl/history/#history">History</a></li>
+				<li><a href="/{{ player.name }}/nfl/players/">Players</a></li>
 			</ul>
 
 			<ul>
 				<select name="weekno" id="weekmenu" onchange="location=this.value;">
-					{% for i in range %}
+					{% for i,wk in weekmenu.items %}
 					{% if i == weekno %}
-					<option value="/{{ player.name }}/nfl/{{ i }}/#picks" selected>Week {{ i }}</option>
+					<option value="/{{ player.name }}/nfl/{{ i }}/#picks" selected>{{ wk }}</option>
 					{% else %}
-					<option value="/{{ player.name }}/nfl/{{ i }}/#picks">Week {{ i }}</option>
+					<option value="/{{ player.name }}/nfl/{{ i }}/#picks">{{ wk }}</option>
 					{% endif %}
 					{% endfor %}
 				</select>

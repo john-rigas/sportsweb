@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.forms import modelformset_factory
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login, logout
-from nfl.models import Player, Selection, Team, Game
+from nfl.models import Player, Selection, Team, Game, WeekRecord, TeamRecord
 from nfl.utils import get_current_datetime, get_current_week
 from nfl.forms import SelectionFormset
 import time
@@ -12,6 +12,9 @@ from collections import OrderedDict
 import os.path
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.db.models import Sum
+from copy import deepcopy
+from datetime import timedelta
 
 
 def home_page(request):
@@ -55,7 +58,7 @@ def logout_user(request):
 
 def nfl_page(request, user, weekno):
     if not request.user.is_authenticated:
-        return redirect(f'/accounts/login/')
+        return redirect('/')
     if not request.user.username == user:
         return redirect('/accounts/logout')
     player = Player.objects.get(name=user)
@@ -67,6 +70,10 @@ def nfl_page(request, user, weekno):
     weekgames = Game.objects.filter(week_no=weekno)
     weekstarted = any(_game.gametime < get_current_datetime()
                       for _game in weekgames)
+
+    weekmenu = {}
+    for wk in range(1,22):
+        weekmenu[wk] = 'Week '+str(wk) if wk < 18 else 'Playoff '+str(wk-17)
 
     weekrecords = {_player.name: [0, 0, 0] for _player in standings}
     picks = []
@@ -96,7 +103,7 @@ def nfl_page(request, user, weekno):
                                         'formset': formset,
                                         'standings': standings,
                                         'weekno': weekno,
-                                        'range': range(1, 18),
+                                        'weekmenu': weekmenu,
                                         'picks': picks,
                                         'weekgames': weekgames,
                                         'weekstarted': weekstarted,
@@ -114,6 +121,11 @@ def nfl_standings(request, user, weekno):
     weekgames = Game.objects.filter(week_no=weekno)
     weekstarted = any(_game.gametime < get_current_datetime()
                       for _game in weekgames)
+    cur_year = cur_year = (get_current_datetime() - timedelta(days = 100)).year
+
+    weekmenu = {}
+    for wk in range(1,22):
+        weekmenu[wk] = 'Week '+str(wk) if wk < 18 else 'Playoff '+str(wk-17)
 
     weekrecords = {_player.name: [0, 0, 0] for _player in standings}
     picks = []
@@ -143,11 +155,12 @@ def nfl_standings(request, user, weekno):
                                         'formset': formset,
                                         'standings': standings,
                                         'weekno': weekno,
-                                        'range': range(1, 18),
+                                        'weekmenu': weekmenu,
                                         'picks': picks,
                                         'weekgames': weekgames,
                                         'weekstarted': weekstarted,
-                                        'weekrecords': weekrecords})
+                                        'weekrecords': weekrecords,
+                                        'year':cur_year})
 
 def nfl_results(request, user, weekno):
     if not request.user.is_authenticated:
@@ -161,6 +174,9 @@ def nfl_results(request, user, weekno):
     weekgames = Game.objects.filter(week_no=weekno)
     weekstarted = any(_game.gametime < get_current_datetime()
                       for _game in weekgames)
+    weekmenu = {}
+    for wk in range(1,22):
+        weekmenu[wk] = 'Week '+str(wk) if wk < 18 else 'Playoff '+str(wk-17)
 
     weekrecords = {_player.name: [0, 0, 0] for _player in standings}
     picks = []
@@ -190,11 +206,140 @@ def nfl_results(request, user, weekno):
                                         'formset': formset,
                                         'standings': standings,
                                         'weekno': weekno,
-                                        'range': range(1, 18),
+                                        'weekmenu': weekmenu,
                                         'picks': picks,
                                         'weekgames': weekgames,
                                         'weekstarted': weekstarted,
                                         'weekrecords': weekrecords})
+
+def nfl_history(request, user):
+    weekno = get_current_week()
+    current_player = Player.objects.get(name=user)
+    if not request.user.is_authenticated:
+        return redirect(f'/accounts/login/')
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+    return render(request, 'history.html', {
+        'standings':standings,
+        'year_range':range(2019,2006,-1),
+        'weekno': weekno,
+        'player': current_player
+        })
+
+def nfl_history_regular(request, user):
+    weekno = get_current_week()
+    current_player = Player.objects.get(name=user)
+    if not request.user.is_authenticated:
+        return redirect(f'/accounts/login/')
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+    return render(request, 'regularhistory.html', {
+        'standings':standings,
+        'year_range':range(2019,2006,-1),
+        'weekno': weekno,
+        'player': current_player
+        })
+
+def nfl_history_playoffs(request, user):
+    weekno = get_current_week()
+    current_player = Player.objects.get(name=user)
+    if not request.user.is_authenticated:
+        return redirect(f'/accounts/login/')
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+    return render(request, 'playoffhistory.html', {
+        'standings':standings,
+        'year_range':range(2019,2006,-1),
+        'weekno': weekno,
+        'player': current_player
+        })
+
+def nfl_history_regular_year(request, user, year):
+    weekno = get_current_week()
+    weekyear = [(wk, year) for wk in range(17,0,-1)]
+    current_player = Player.objects.get(name=user)
+    if not request.user.is_authenticated:
+        return redirect(f'/accounts/login/')
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+    return render(request, 'regularhistoryyear.html', {
+        'standings':standings,
+        'year_range':range(2019,2006,-1),
+        'weekyear': weekyear,
+        'player': current_player,
+        'year':year,
+        'weekno':weekno
+        })
+
+def nfl_history_playoffs_year(request, user, year):
+    weekno = get_current_week()
+    weekyear = [(wk, year) for wk in range(21,17,-1)]
+    current_player = Player.objects.get(name=user)
+    if not request.user.is_authenticated:
+        return redirect(f'/accounts/login/')
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+    return render(request, 'playoffhistoryyear.html', {
+        'standings':standings,
+        'week_range':range(17,0,-1),
+        'weekyear': weekyear,
+        'player': current_player,
+        'year': year,
+        'weekno': weekno
+        })
+
+def nfl_history_year(request, user, year):
+    weekno = get_current_week()
+    weekyear = [(wk, year) for wk in range(21,0,-1)]
+    current_player = Player.objects.get(name=user)
+    if not request.user.is_authenticated:
+        return redirect(f'/accounts/login/')
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+    return render(request, 'yearhistory.html', {
+        'standings':standings,
+        'week_range':range(17,0,-1),
+        'player': current_player,
+        'weekyear': weekyear,
+        'year':year,
+        'weekno':weekno
+        })
+
+
+def nfl_players(request, user):
+    weekno = get_current_week()
+    current_player = Player.objects.get(name=user)
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+    return render(request, 'players.html', {
+        'standings': standings,
+        'player': current_player,
+        'weekno': weekno
+    })
+
+def nfl_player(request, user, player):
+    weekno = get_current_week()
+    current_player = Player.objects.get(name=user)
+    info_player = Player.objects.get(name=player)
+    standings = Player.objects.extra(
+        select={'total_wins': "wins + fwins"}).order_by('-total_wins')
+
+    teams = Team.objects.all()
+    records = {}
+    for team in teams:
+        year_record = TeamRecord.objects.get(timeframe = 'Y', player = info_player, team = team)
+        year_rate = f"{year_record.wins/(year_record.wins+year_record.losses):.3f}" if year_record.losses else "1.000"
+        career_record = TeamRecord.objects.get(timeframe = 'C', player = info_player, team = team)
+        career_rate = f"{(year_record.wins+career_record.wins)/(year_record.wins+career_record.wins+year_record.losses+career_record.losses):.3f}" if year_record.losses+career_record.losses else "1.000"
+        records[team.name] = (year_record.wins, year_record.losses, year_record.ties, year_rate,
+                             year_record.wins+career_record.wins, year_record.losses+career_record.losses, year_record.ties+career_record.ties, career_rate)
+    return render(request, 'player.html', {
+        'standings': standings,
+        'player': current_player,
+        'weekno': weekno,
+        'records': records,
+        'info_player': info_player
+    })
 
 
 def picks(request, user, weekno):

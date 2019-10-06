@@ -30,5 +30,13 @@ urlpatterns = [
          nfl_views.change_password, name='changepassword'),
     path('password', nfl_views.user_password, name='userpassword'),
     path('<str:user>/nfl/<int:weekno>/standings/', nfl_views.nfl_standings, name='nflstandings'),
-    path('<str:user>/nfl/<int:weekno>/results/', nfl_views.nfl_results, name='nflresult')
+    path('<str:user>/nfl/<int:weekno>/results/', nfl_views.nfl_results, name='nflresult'),
+    path('<str:user>/nfl/history/', nfl_views.nfl_history, name='nflhistory'),
+    path('<str:user>/nfl/history/regular/', nfl_views.nfl_history_regular, name='nflhistoryregular'),
+    path('<str:user>/nfl/history/playoffs/', nfl_views.nfl_history_playoffs, name='nflhistoryplayoffs'),
+    path('<str:user>/nfl/history/regular/<int:year>/', nfl_views.nfl_history_regular_year, name='nflhistoryregularyear'),
+    path('<str:user>/nfl/history/playoffs/<int:year>/', nfl_views.nfl_history_playoffs_year, name='nflhistoryplayoffsyear'),
+    path('<str:user>/nfl/history/<int:year>/', nfl_views.nfl_history_year, name='nflhistoryyear'),
+    path('<str:user>/nfl/players/', nfl_views.nfl_players, name='nflplayers'),
+    path('<str:user>/nfl/players/<str:player>/', nfl_views.nfl_player, name='nflplayer')
 ]

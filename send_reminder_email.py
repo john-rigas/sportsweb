@@ -45,7 +45,7 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
 
                 message = f'{player.name}, \n\nThere are games starting in {time_remaining} that you have not picked.  Please go to fredandfred.tk to make your picks.'
 
-                if player.name in ['unclemike', 'uncletim', 'papou']:
+                if player.name in ['johnny']:
                 #if player.name == 'johnny':
                     send_mail('You are running out of time to make your nfl picks',
                               message,
@@ -53,7 +53,7 @@ for (gamekey, gametime), gameset in reminder_schedule.items():
                               [user.email],
                               fail_silently=False)
 
-                if player.name in ['chris', 'johnny', 'andrew','david','doc']:
+                if player.name in ['chris', 'johnny', 'andrew','david','doc','unclemike','uncletim','papou']:
                 #if player.name == 'johnny':
                     twilioCli = Client(phone['account'], phone['token'])
                     text_message = twilioCli.messages.create(

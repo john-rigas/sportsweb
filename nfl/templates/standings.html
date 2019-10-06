@@ -2,6 +2,8 @@
 
 
 {% load static %}
+{% load nfl_extras %}
+
 <!--
 	Massively by HTML5 UP
 	html5up.net | @ajlkn
@@ -44,6 +46,8 @@
 					<li><a href="/{{ player.name }}/nfl/{{ weekno }}/#picks">Make Picks</a></li>
 					<li class="active"><a name="standings" href="">Standings</a></li>
 					<li><a href="/{{ player.name }}/nfl/{{ weekno }}/results/#results">Results</a></li>
+					<li><a href="/{{ player.name }}/nfl/history/#history">History</a></li>
+					<li><a href="/{{ player.name }}/nfl/players/">Players</a></li>
 				</ul>
 			</ul>
 			<!-- <ul class="icons">
@@ -54,11 +58,11 @@
 			</ul> -->
 			<ul>
 				<select name="weekno" id="weekmenu" onchange="location=this.value;">
-					{% for i in range %}
+					{% for i,wk in weekmenu.items %}
 					{% if i == weekno %}
-					<option value="/{{ player.name }}/nfl/{{ i }}/standings/#standings" selected>Week {{ i }}</option>
+					<option value="/{{ player.name }}/nfl/{{ i }}/#picks" selected>{{ wk }}</option>
 					{% else %}
-					<option value="/{{ player.name }}/nfl/{{ i }}/standings/#standings">Week {{ i }}</option>
+					<option value="/{{ player.name }}/nfl/{{ i }}/#picks">{{ wk }}</option>
 					{% endif %}
 					{% endfor %}
 				</select>
@@ -81,22 +85,23 @@
 						<td>T</td>
 						<td>GB</td>
 					</tr>
-					{% for player in standings %}
+					{% for cur_player in standings %}
 					<tr>
 						<td>{{ forloop.counter }}:</td>
-						<td> {{ player.name }}</td>
+						<td><a href="/{{ player.name }}/nfl/players/{{ cur_player.name }}/">{{ cur_player.name }}</a>
+						</td>
 						<td></td>
-						<td> {{ player.wins|add:player.fwins }}</td>
-						<td> {{ player.losses|add:player.flosses }}</td>
-						<td> {{ player.ties|add:player.fties }}</td>
-						<td> {{ player.gb }}</td>
+						<td> {{ cur_player.wins|add:player.fwins }}</td>
+						<td> {{ cur_player.losses|add:player.flosses }}</td>
+						<td> {{ cur_player.ties|add:player.fties }}</td>
+						<td> {{ cur_player.gb }}</td>
 					</tr>
 					{% endfor %}
 				</table>
 				<table class="table-big">
 					<tr>
 						<td colspan="3"></td>
-						<td colspan="4">OVERALL</td>
+						<td colspan="5">OVERALL</td>
 						<td colspan="3"></td>
 						<td colspan="3">PREDICTED</td>
 						<td colspan="3"></td>
@@ -109,6 +114,7 @@
 						<td>W</td>
 						<td>L</td>
 						<td>T</td>
+						<td>%</td>
 						<td>GB</td>
 						<td colspan="3"></td>
 						<td>W</td>
@@ -119,23 +125,26 @@
 						<td>L</td>
 						<td>T</td>
 					</tr>
-					{% for player in standings %}
+					{% for cur_player in standings %}
 					<tr>
 						<td>{{ forloop.counter }}:</td>
-						<td> {{ player.name }}</td>
+						<td><a href="/{{ player.name }}/nfl/players/{{ cur_player.name }}/">{{ cur_player.name }}</a>
+						</td>
 						<td></td>
-						<td> {{ player.wins|add:player.fwins }}</td>
-						<td> {{ player.losses|add:player.flosses }}</td>
-						<td> {{ player.ties|add:player.fties }}</td>
-						<td> {{ player.gb }}</td>
+						<td> {{ cur_player.wins|add:cur_player.fwins }}</td>
+						<td> {{ cur_player.losses|add:cur_player.flosses }}</td>
+						<td> {{ cur_player.ties|add:cur_player.fties }}</td>
+						<td>{{ cur_player|calc_yearpercent:year }}</td>
+
+						<td> {{ cur_player.gb }}</td>
 						<td colspan="3"></td>
-						<td> {{ player.wins }}</td>
-						<td> {{ player.losses }}</td>
-						<td> {{ player.ties }}</td>
+						<td> {{ cur_player.wins }}</td>
+						<td> {{ cur_player.losses }}</td>
+						<td> {{ cur_player.ties }}</td>
 						<td colspan="3"></td>
-						<td> {{ player.fwins }}</td>
-						<td> {{ player.flosses }}</td>
-						<td> {{ player.fties }}</td>
+						<td> {{ cur_player.fwins }}</td>
+						<td> {{ cur_player.flosses }}</td>
+						<td> {{ cur_player.fties }}</td>
 					</tr>
 					{% endfor %}
 				</table>
