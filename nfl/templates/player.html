@@ -35,7 +35,7 @@
 
         <!-- Header -->
         <header id="header">
-            <a href="index.html" class="logo">NFL Picks</a>
+            <a href="#header" class="logo">NFL Picks</a>
         </header>
 
         <!-- Nav -->
@@ -104,6 +104,31 @@
                     <td>{{ record.5 }}</td>
                     <td>{{ record.6 }}</td>
                     <td>{{ record.7 }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <table class="table-small">
+                <tr>
+                    <td>{{ info_player.name }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="4">CURRENT YEAR</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>W</td>
+                    <td>L</td>
+                    <td>T</td>
+                    <td>%</td>
+                </tr>
+                {% for teamname,record in records.items %}
+                <tr>
+                    <td>{{ teamname }}</td>
+                    <td>{{ record.0 }}</td>
+                    <td>{{ record.1 }}</td>
+                    <td>{{ record.2 }}</td>
+                    <td>{{ record.3 }}</td>
                 </tr>
                 {% endfor %}
             </table>
