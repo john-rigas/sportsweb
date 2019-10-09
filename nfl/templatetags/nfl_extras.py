@@ -86,7 +86,7 @@ def calc_championships(standings, portion="full"):
     cur_year = (get_current_datetime() - timedelta(days = 100)).year
     championships = [0 for player in standings]
     all_ties = False
-    for year in range(2007, cur_year):
+    for year in range(2005, cur_year):
         year_ties = False
         best = None
         for idx,player in enumerate(standings):
@@ -167,7 +167,7 @@ def _sum_total_record(player, portion="full"):
     cur_year = (get_current_datetime() - timedelta(days = 100)).year
     wins, losses, ties = _calc_current_year_record(player, cur_year, portion)
     total_wins, total_losses, total_ties = _replace_none_record(wins, losses, ties)
-    for year in range(cur_year - 1, 2006, -1):
+    for year in range(cur_year - 1, 2004, -1):
         wins, losses, ties = _calc_previous_year_record(player, year, portion)
         wins, losses, ties = _replace_none_record(wins, losses, ties)
         total_wins += wins

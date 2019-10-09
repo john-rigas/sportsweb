@@ -58,4 +58,5 @@ def _add_cronjobs():
     run('echo "*/15 * * * * cd ~/sites/fredandfred.tk && ./virtualenv/bin/python run_updates.py"  >> /tmp/crondump')
     run('echo "0 0 * 9-12 3 cd ~/sites/fredandfred.tk && ./virtualenv/bin/python set_currentweek_reminder_emails.py" >> /tmp/crondump')
     run('echo "0 0 * * 1 cd ~/sites/fredandfred.tk && ./virtualenv/bin/python send_backup_email.py" >> /tmp/crondump')  # cron should be 0 0 * * 1
+    run('echo "0 0 * * 3 cd ~/sites/fredandfred.tk && ./virtualenv/bin/python create_and_or_update_team_records.py"  >> /tmp/crondump'')
     run('crontab /tmp/crondump')

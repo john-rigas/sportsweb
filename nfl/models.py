@@ -248,6 +248,7 @@ class SelectionManager(models.Manager):
                     worst_record = self.model.objects.get_worst_record_for_game_set(
                         missed_games[player.name][week_no])
                     for game in missed_games[player.name][week_no]:
+                        print (worst_record)
                         selection = self.model.objects.get(
                             player=player, game=game)
                         if worst_record[0] > 0:

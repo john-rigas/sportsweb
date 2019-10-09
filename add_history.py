@@ -20,11 +20,13 @@ INITIAL_MAP = {
 }
 
 if not models.WeekRecord.objects.all():
+#if True:
 
     with open('nfl_picks_history.pl','rb') as f:
         data = pickle.load(f)
 
-    for year in range(2007, 2019):
+
+    for year in range(2005, 2007):
         for initials in data[year].keys():
             name = INITIAL_MAP[initials[:2]]
             player = models.Player.objects.get(name = name)

@@ -221,7 +221,7 @@ def nfl_history(request, user):
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'history.html', {
         'standings':standings,
-        'year_range':range(2019,2006,-1),
+        'year_range':range(2019,2004,-1),
         'weekno': weekno,
         'player': current_player
         })
@@ -235,7 +235,7 @@ def nfl_history_regular(request, user):
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'regularhistory.html', {
         'standings':standings,
-        'year_range':range(2019,2006,-1),
+        'year_range':range(2019,2004,-1),
         'weekno': weekno,
         'player': current_player
         })
@@ -249,7 +249,7 @@ def nfl_history_playoffs(request, user):
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'playoffhistory.html', {
         'standings':standings,
-        'year_range':range(2019,2006,-1),
+        'year_range':range(2019,2004,-1),
         'weekno': weekno,
         'player': current_player
         })
@@ -264,7 +264,7 @@ def nfl_history_regular_year(request, user, year):
         select={'total_wins': "wins + fwins"}).order_by('-total_wins')
     return render(request, 'regularhistoryyear.html', {
         'standings':standings,
-        'year_range':range(2019,2006,-1),
+        'year_range':range(2019,2004,-1),
         'weekyear': weekyear,
         'player': current_player,
         'year':year,
